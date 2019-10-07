@@ -3,9 +3,11 @@
     Ola {{username}}
     <ul>
       <li v-for="aula in aulas">
-        <span>{{aula.dia}}</span>
-        <span>{{aula.hora}}</span>
-        <span>{{aula.quantidade}}</span>
+        <h2>{{aula.dia}}</h2>
+        <h2>{{aula.hora}}</h2>
+        <h2>{{aula.quantidade}}</h2>
+        <h2 v-if="!aula.alunos.includes(id)" @click="fazerCheckin(aula)">Check-in</h2>
+        <h2 v-else @click="desfazerCheckin(aula)">Desfazer Check-in</h2>
       </li>
     </ul>
   </div>
@@ -24,6 +26,23 @@ export default{
     }
   },
   methods:{
+    fazerCheckin(aula){
+      aula.alunos.push(this.id)
+      axios.put('list_aulas/'+aula.id+'/', aula).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    desfazerCheckin(aula){
+      let index = aula.alunos.indexOf(this.id);
+      aula.alunos.splice(index, 1);
+      axios.put('list_aulas/'+aula.id+'/', aula).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
   },
   mounted(){
     let app = this;

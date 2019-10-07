@@ -53,11 +53,12 @@ export default{
    ]),
     logar(){
       let app = this;
-      axios.post('http://localhost:8000/login/', {'cpf':this.cpf, 'password':this.senha}).then(function(res){
+      axios.post('login/', {'cpf':this.cpf, 'password':this.senha}).then(function(res){
         //console.log(res.data.token)
         app.setToken(res.data.token)
         app.setUsuario(res.data.username)
-        app.setUserid(res.data.setUserid)
+
+        app.setUserid(res.data.userid)
         //console.log(res.data)
         app.$router.push('/aulas')
       })
