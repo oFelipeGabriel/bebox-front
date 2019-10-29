@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersist from 'vuex-persist'
 import router from './router';
+import axios from 'axios';
 
 
 Vue.use(Vuex)
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     userid: null,
     temToken: false,
     admin: false,
+    nome: null
   },
   mutations: {
     setUsuario (state, usuario) {
@@ -40,6 +42,15 @@ export default new Vuex.Store({
       router.push('/login');
     },
     setAdmin(state, admin){
+      let url;
+      if(admin){
+        url = 'list_admin/'
+      }else{
+        url = 'list_alunos/'
+      }
+      axios.get(url+state.userid).then(res => {
+        state.nome = res.data.nome
+      })
       state.admin = admin;
     }
   },
@@ -53,7 +64,12 @@ export default new Vuex.Store({
   },
   getters:{
     isAdmin: state =>{
-      return state.admin
-    }
+      if(state.admin){
+        return state.admin
+      }else{
+        router.push('/login');
+      }
+    },
+    getNome: state => {return state.nome}
   }
 })

@@ -1,29 +1,9 @@
 <template>
   <div class="">
-  <a href="/alunos/novo">Novo</a>
-  <a href="/aulas">Ver aulas</a>
-    <table>
-      <tr>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>CPF</th>
-        <th>Plano</th>
-        <th>Vencimento</th>
-        <th>Data de nascimento</th>
-        <th>Telefone</th>
-        <th>Endereço</th>
-      </tr>
-    </table>
-    <tr v-for="aluno in alunos">
-      <td>{{aluno.nome}}</td>
-      <td>{{aluno.email}}</td>
-      <td>{{aluno.cpf}}</td>
-      <td>{{aluno.plano}}</td>
-      <td>{{aluno.vencimento}}</td>
-      <td>{{aluno.data_nascimento}}</td>
-      <td>{{aluno.telefone}}</td>
-      <td>{{aluno.endereco}}</td>
-    </tr>
+    Dia: <input type="date" v-model="dia">
+    Hora: <input type="time" v-model="hora">
+    Quantidade: <input type="number" v-model="quantidade">
+    <button type="button" @click="cadastrar">Cadastrar</button>
   </div>
 </template>
 
@@ -36,11 +16,28 @@ export default{
   name: 'Alunos',
   data(){
     return{
-      alunos: []
+      alunos: [],
+      dia: new Date(),
+      hora: null,
+      quantidade: 0
     }
   },
   methods:{
-
+    cadastrar(){
+      let dados = {}
+      dados.dia = this.dia;
+      dados.hora = this.hora;
+      dados.quantidade = this.quantidade;
+      //dados.alunos = [];
+      let headers = [
+        {"Access-Control-Allow-Origin": "*"}
+      ]
+      axios.post('/list_aulas/', dados, {headers: {"Access-Control-Allow-Origin": "*"}}).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   },
   mounted(){
     let app = this;
