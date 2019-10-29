@@ -70,6 +70,13 @@ export default new Vuex.Store({
         router.push('/login');
       }
     },
-    getNome: state => {return state.nome}
+    getNome: state => {
+      if(state.usuario != null && state.nome == null){
+        axios.get('list_usr/'+state.userid).then(res => {
+          state.nome = res.data.nome
+        })
+      }
+      return state.nome
+    }
   }
 })

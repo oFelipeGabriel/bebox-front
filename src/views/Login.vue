@@ -15,7 +15,7 @@
                       <span class="focus-input100-1"></span>
                       <span class="focus-input100-2"></span>
                   </div>
-
+                  <span v-show="invalid" class="invalid-login">Login inválido</span>
                   <div class="container-login100-form-btn m-t-20">
                       <button class="login100-form-btn" @click="logar">
                           ENTRAR
@@ -38,6 +38,7 @@ export default{
       cpf: '',
       senha: '',
       is_admin: false,
+      invalid: false
     }
   },
   methods:{
@@ -63,9 +64,13 @@ export default{
         app.setAdmin(res.data.is_admin)
         app.setUserid(res.data.userid)
         app.validaAdmin(res.data.userid)
-        console.log(res.data)
         //console.log(res.data)
         //app.$router.push('/aulas')
+      }).catch(err => {
+        let status = err.response.status
+        if(status == 400){
+          app.invalid = true;
+        }
       })
     }
   }
@@ -227,8 +232,10 @@ export default{
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      padding: 15px;
       background: $primary;
+      position: absolute;
+      top: 0;
+      left: 0;
   }
 
   .wrap-login100 {
@@ -255,7 +262,11 @@ export default{
       line-height: 1.2;
       text-align: center;
   }
-
+.invalid-login{
+  color: $negative;
+  font-size: 1.5rem;
+  padding: 10px 0
+}
   .wrap-input100 {
       width: 100%;
       position: relative;

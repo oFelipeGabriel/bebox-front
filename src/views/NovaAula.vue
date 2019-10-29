@@ -28,7 +28,7 @@ export default{
       dados.dia = this.dia;
       dados.hora = this.hora;
       dados.quantidade = this.quantidade;
-      //dados.alunos = [];
+      dados.alunos_id = [];
       let headers = [
         {"Access-Control-Allow-Origin": "*"}
       ]

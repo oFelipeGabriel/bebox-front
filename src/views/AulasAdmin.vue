@@ -11,8 +11,7 @@
     </table>
     <div  v-for="aula in aulas">
       <div>
-        <div>{{aula.dia}}</div>
-        <div>{{aula.hora}}</div>
+        <div>{{setDate(aula.dia).getDate()}}/{{meses[setDate(aula.dia).getMonth()]}} - {{setHour(aula.hora)}} Hrs</div>
         <div>{{aula.quantidade}}</div>
       </div>
       <div v-for="aluno in aula.alunos">
@@ -31,11 +30,19 @@ export default{
   name: 'Alunos',
   data(){
     return{
-      aulas: []
+      aulas: [],
+      meses: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     }
   },
   methods:{
-
+    setDate(date){
+      return new Date(date)
+    },
+    setHour(hora){
+      let h = hora.split(':')[0]
+      let m = hora.split(':')[1]
+      return h+':'+m
+    },
   },
   mounted(){
     let app = this;

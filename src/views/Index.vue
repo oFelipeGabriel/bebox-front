@@ -1,11 +1,13 @@
 <template>
   <div class="">
-    Ola {{nome}}
+    <div class="header">
+      <span>Ola {{nome}}</span>
+    </div>
     <ul>
       <li v-for="aula in aulas">
-        <h2>{{aula.dia}}</h2>
-        <h2>{{aula.hora}}</h2>
-        <h2>{{aula.quantidade}}</h2>
+        <h2>{{setDate(aula.dia).getDate()}}/{{meses[setDate(aula.dia).getMonth()]}} - {{setHour(aula.hora)}} Hrs</h2>
+        <h2>Total: {{aula.quantidade}}</h2>
+        <h2>Ja inscritos: {{aula.alunos_id.length}}</h2>
         <h2 v-if="!verificaAula(aula) && !verificaLimite(aula)">Limite atingido</h2>
         <h2 v-else-if="!verificaAula(aula)" @click="fazerCheckin(aula)">Fazer check-in</h2>
         <h2 v-else @click="desfazerCheckin(aula)">Desfazer Check-in</h2>
@@ -23,12 +25,14 @@ export default{
   name: 'Index',
   data(){
     return{
-      aulas: []
+      aulas: [],
+      id: null,
+      meses: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     }
   },
   methods:{
     fazerCheckin(aula){
-      aula.alunos.push(this.id)
+      aula.alunos_id.push(this.id)
       axios.put('list_aulas/'+aula.id+'/', aula).then(res => {
         console.log(res)
       }).catch(err => {
@@ -36,9 +40,8 @@ export default{
       })
     },
     desfazerCheckin(aula){
-      let aluno = aula.alunos.filter(aluno => {return aluno==this.id})[0]
-      let index = aula.alunos.indexOf(aluno);
-      aula.alunos.splice(index, 1);
+      let index = aula.alunos_id.indexOf(this.id);
+      aula.alunos_id.splice(index, 1);
       axios.put('list_aulas/'+aula.id+'/', aula).then(res => {
         console.log(res)
       }).catch(err => {
@@ -53,9 +56,17 @@ export default{
         return true
       }
     },
+    setDate(date){
+      return new Date(date)
+    },
+    setHour(hora){
+      let h = hora.split(':')[0]
+      let m = hora.split(':')[1]
+      return h+':'+m
+    },
     verificaAula(aula){
-      for(let a in aula.alunos){
-        if(aula.alunos[a]==this.id){
+      for(let a in aula.alunos_id){
+        if(aula.alunos_id[a]==this.id){
           return true
         }
       }
@@ -65,10 +76,20 @@ export default{
   mounted(){
     let app = this;
     axios.get('list_aulas/').then(function(res){
-      app.aulas = res.data;
+      console.log(res.data)
+      app.aulas = res.data
+
     }).catch(function(error){
       console.log(error)
     })
+    if(this.$store.state.admin){
+      this.$router.push('/admin/aulas')
+    }
+    if(this.$store.state.userid==null){
+      this.$router.push('/login')
+    }else{
+      this.id = this.$store.state.userid;
+    }
   },
   computed:{
       token:{
@@ -79,11 +100,6 @@ export default{
       username:{
         get(){
           return this.$store.state.usuario;
-        }
-      },
-      id:{
-        get(){
-          return this.$store.state.userid;
         }
       },
       admin:{
@@ -99,3 +115,23 @@ export default{
     },
 }
 </script>
+
+<style lang="scss">
+.header{
+  color: #ccc;
+  background-color: $primary;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: right;
+  padding: 10px 0;
+}
+.header span{
+  padding: 10%;
+}
+ul{
+  list-style: none;
+  background-color: $secondary;
+}
+</style>
