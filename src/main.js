@@ -5,8 +5,8 @@ import store from './store'
 import axios from 'axios'
 
 Vue.config.productionTip = false
-//axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
-axios.defaults.baseURL = 'http://localhost:8000/'
+axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
+//axios.defaults.baseURL = 'http://localhost:8000/'
 
 axios.interceptors.request.use(config => {
   if(store.state.token) {
