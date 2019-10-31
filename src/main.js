@@ -12,13 +12,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
-//axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
-axios.defaults.baseURL = 'http://localhost:8000/'
+axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
+//axios.defaults.baseURL = 'http://localhost:8000/'
 
 axios.interceptors.request.use(config => {
   if(store.state.token) {
     config.headers.Authorization = 'JWT '+store.state.token
   }
+  config.headers['Access-Control-Allow-Origin'] = '*'
   return config
 })
 
