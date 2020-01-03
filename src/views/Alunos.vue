@@ -13,7 +13,6 @@
         <th>Telefone</th>
         <th>Endereço</th>
       </tr>
-    </table>
     <tr v-for="aluno in alunos">
       <td>{{aluno.nome}}</td>
       <td>{{aluno.email}}</td>
@@ -24,6 +23,8 @@
       <td>{{aluno.telefone}}</td>
       <td>{{aluno.endereco}}</td>
     </tr>
+
+  </table>
   </div>
 </template>
 
@@ -44,9 +45,9 @@ export default{
   },
   mounted(){
     let app = this;
-    axios.get('list_alunos/').then(function(res){
+    axios.get('usuario/getAllAdmin').then(function(res){
       console.log(res)
-      app.alunos = res.data.results;
+      app.alunos = res.data;
     }).catch(function(error){
       console.log(error)
     })

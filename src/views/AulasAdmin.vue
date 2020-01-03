@@ -66,9 +66,9 @@ export default{
   mounted(){
     let app = this;
     let admin = this.$store.getters.isAdmin
-    axios.get('admin/aulas').then(function(res){
+    axios.get('aula/getAll').then(function(res){
       console.log(res)
-      app.aulas = res.data.results;
+      app.aulas = res.data;
     }).catch(function(error){
       console.log(error)
     })

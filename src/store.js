@@ -42,15 +42,7 @@ export default new Vuex.Store({
       router.push('/login');
     },
     setAdmin(state, admin){
-      let url;
-      if(admin){
-        url = 'list_admin/'
-      }else{
-        url = 'list_alunos/'
-      }
-      axios.get(url+state.userid).then(res => {
-        state.nome = res.data.nome
-      })
+      
       state.admin = admin;
     }
   },
@@ -71,12 +63,8 @@ export default new Vuex.Store({
       }
     },
     getNome: state => {
-      if(state.usuario != null && state.nome == null){
-        axios.get('list_usr/'+state.userid).then(res => {
-          state.nome = res.data.nome
-        })
-      }
-      return state.nome
+      
+      return state.usuario.nome
     }
   }
 })

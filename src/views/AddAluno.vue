@@ -4,11 +4,11 @@
     <li>Nome: <input type="text" v-model="nome"></li>
     <li>E-Mail: <input type="email" v-model="email"></li>
     <li>CPF:: <input type="text" v-model="cpf"></li>
-    <li>Plano: <input type="text" v-model="plano"></li>
-    <li>Vencimento: <input type="number" v-model="vencimento"></li>
-    <li>Telefone: <input type="number" v-model="telefone"></li>
-    <li>Endereço: <input type="number" v-model="endereco"></li>
-    <button type="button" @click="cadastrar">Cadastrar</button>
+    <li>Data de Nascimento: <input type="date" v-model="data_nasc"></li>
+    <li>Endereço: <input type="text" v-model="endereco"></li>
+    <li>Telefone: <input type="text" v-model="telefone"></li>
+    <li>Administrador: <input type="checkbox" v-model="admin"></li>
+    <button @click="cadastrar">Cadastrar</button>
   </ul>
   </div>
 </template>
@@ -27,43 +27,44 @@ export default{
       cpf: '',
       plano: '',
       vencimento: '',
+      data_nasc: '',
       telefone: '',
       endereco: '',
+      admin: true
     }
   },
   methods:{
     cadastrar(){
       let dados = {}
       let app = this;
+      let d = new Date(this.data_nasc).toISOString();
+
       dados.nome = this.nome;
       dados.email = this.email;
       dados.cpf = this.cpf;
-      dados.plano = this.plano;
-      dados.vencimento = this.vencimento;
+      dados.autorizacao = this.admin;      
+      dados.data_nasc = Date.parse(d);
       dados.telefone = this.telefone;
       dados.endereco = this.endereco;
-      dados.is_admin = false
-      dados.password = ''
-      //dados.alunos = [];
-      let headers = [
-        {"Access-Control-Allow-Origin": "*"}
-      ]
-      axios.post('/list_alunos/', dados).then(res => {
+      console.log('antes', dados)
+      axios.post('usuario/novoUsuario', dados).then(res => {
+        console.log(dados)
         console.log(res)
         app.$router.push('/alunos')
       }).catch(err => {
+        console.log('dados', dados)
         console.log(err)
       })
     }
   },
   mounted(){
-    let app = this;
-    axios.get('list_alunos/').then(function(res){
-      console.log(res)
-      app.alunos = res.data.results;
-    }).catch(function(error){
-      console.log(error)
-    })
+    //let app = this;
+    // axios.get('list_alunos/').then(function(res){
+    //   console.log(res)
+    //   app.alunos = res.data.results;
+    // }).catch(function(error){
+    //   console.log(error)
+    // })
   },
   computed:{
       token:{

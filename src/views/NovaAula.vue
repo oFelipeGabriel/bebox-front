@@ -25,14 +25,14 @@ export default{
   methods:{
     cadastrar(){
       let dados = {}
-      dados.dia = this.dia;
+      let d = new Date(this.dia).toISOString();
+
+      dados.dia = Date.parse(d);
       dados.hora = this.hora;
       dados.quantidade = this.quantidade;
       dados.alunos_id = [];
-      let headers = [
-        {"Access-Control-Allow-Origin": "*"}
-      ]
-      axios.post('/list_aulas/', dados, {headers: {"Access-Control-Allow-Origin": "*"}}).then(res => {
+      
+      axios.post('aula/novaAula', dados).then(res => {
         console.log(res)
       }).catch(err => {
         console.log(err)

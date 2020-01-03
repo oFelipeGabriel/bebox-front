@@ -30,7 +30,12 @@
 <script>
 import axios from 'axios';
 import { mapMutations } from 'vuex';
-
+export const AXIOS = axios.create({
+  baseURL: 'http://localhost:8082',
+  headers: {
+    'Content-Type':'application/json'
+  }
+})
 export default{
   name: 'Login',
   data(){
@@ -50,22 +55,19 @@ export default{
    ]),
     validaAdmin(id){
       let app = this;
-      axios.get('list_usr/'+id).then(res => {
-        app.setAdmin(res.data.is_admin)
-        app.$router.push('/aulas')
-      })
+      
     },
     logar(){
       let app = this;
-      axios.post('login/', {'cpf':this.cpf, 'password':this.senha}).then(function(res){
-        //console.log(res.data.token)
-        app.setToken(res.data.token)
-        app.setUsuario(res.data.username)
+      axios.post('logando/', {'username':this.cpf, 'password':this.senha}).then(function(res){
+        app.setToken(res.headers.token)
+        app.setUsuario(res.data)
         app.setAdmin(res.data.is_admin)
-        app.setUserid(res.data.userid)
-        app.validaAdmin(res.data.userid)
-        //console.log(res.data)
-        //app.$router.push('/aulas')
+        if(res.data.is_admin){
+            app.$router.push('/admin/aulas')
+        }else{
+            app.$router.push('/aulas')
+        }
       }).catch(err => {
         let status = err.response.status
         if(status == 400){

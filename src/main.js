@@ -12,29 +12,28 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
-axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
-//axios.defaults.baseURL = 'http://localhost:8000/'
-
-axios.interceptors.request.use(config => {
-  if(store.state.token) {
-    config.headers.Authorization = 'JWT '+store.state.token
-  }
-  config.headers['Access-Control-Allow-Origin'] = '*'
-  return config
-})
+//axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
+axios.defaults.baseURL = 'http://localhost:8082/api/'
+axios.defaults.withCredentials = true;
+// axios.interceptors.request.use(config => {
+//   if(store.state.token) {
+//     config.headers.Authorization = 'Bearer '+store.state.token
+//   }
+//   return config
+// })
 
 axios.interceptors.response.use(res => {
     return res
   }, error => {
-    if(error.response.status === 403) {
-      alert('Não autorizado!')
-      //store.commit('logout')
-      router.push('/login')
-    }
-    else if (error.response.status === 401) {
-      //store.commit('logout')
-      router.push('/login')
-    }
+    // if(error.response.status === 403) {
+    //   alert('Não autorizado!')
+    //   //store.commit('logout')
+    //   router.push('/login')
+    // }
+    // else if (error.response.status === 401) {
+    //   //store.commit('logout')
+    //   router.push('/login')
+    // }
     throw error
 })
 Vue.config.productionTip = false
