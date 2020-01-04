@@ -5,7 +5,6 @@
                   <img src="../assets/img/logo.png" alt="Bebox" class="logo">
 
                   <div class="wrap-input100 validate-input">
-                      {{url}}
                       <input :class="'input100 '+inputErro" type="text" v-model="cpf" placeholder="CPF">
                       <span class="focus-input100-1"></span>
                       <span class="focus-input100-2"></span>
@@ -36,7 +35,6 @@ export default{
   name: 'Login',
   data(){
     return{
-        url: axios.defaults.baseURL,
       cpf: '',
       senha: '',
       is_admin: false,
