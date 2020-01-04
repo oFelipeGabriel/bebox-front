@@ -38,7 +38,7 @@ const router = new Router({
       component: AddAluno
     },
     {
-      path: '/nova-aula',
+      path: '/admin/nova_aula',
       name: 'nova-aula',
       component: NovaAula
     },

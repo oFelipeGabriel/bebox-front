@@ -1,23 +1,40 @@
 <template>
-  <div class="">
-    Dia: <input type="date" v-model="dia">
-    Hora: <input type="time" v-model="hora">
-    Quantidade: <input type="number" v-model="quantidade">
-    <button type="button" @click="cadastrar">Cadastrar</button>
+  <div>
+    <HeaderAdmin></HeaderAdmin>
+  <div class="row d-flex justify-content-center">
+    <div class="card col-md-10 py-3">
+      <div class="form-group">
+        <label class="w-100 text-left">Dia: </label>
+        <b-form-input type="date" v-model="dia"></b-form-input>
+      </div>
+      <div class="form-group">
+        <label class="w-100 text-left">Hora: </label>
+        <b-form-input type="time" v-model="hora"></b-form-input>
+      </div>
+      <div class="form-group">
+        <label class="w-100 text-left">Quantidade: </label>
+        <b-form-input type="number" v-model="quantidade"></b-form-input>
+      </div>
+      <b-button type="button" @click="cadastrar">Cadastrar</b-button>
+    </div>
+  </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { mapMutations } from 'vuex';
-
+import HeaderAdmin from '../components/HeaderAdmin.vue'
 
 export default{
   name: 'Alunos',
+  components: {
+    HeaderAdmin
+  },
   data(){
     return{
       alunos: [],
-      dia: new Date(),
+      dia: '',
       hora: null,
       quantidade: 0
     }
@@ -26,28 +43,19 @@ export default{
     cadastrar(){
       let dados = {}
       let d = new Date(this.dia).toISOString();
-
+      let app = this
       dados.dia = Date.parse(d);
       dados.hora = this.hora;
       dados.quantidade = this.quantidade;
       dados.alunos_id = [];
-      
       axios.post('aula/novaAula', dados).then(res => {
-        console.log(res)
+        app.$router.push('/admin/aulas')
       }).catch(err => {
         console.log(err)
       })
     }
   },
-  mounted(){
-    let app = this;
-    axios.get('list_alunos/').then(function(res){
-      console.log(res)
-      app.alunos = res.data.results;
-    }).catch(function(error){
-      console.log(error)
-    })
-  },
+  
   computed:{
       token:{
         get(){

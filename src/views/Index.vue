@@ -1,9 +1,6 @@
 <template>
   <div class="">
-    <div class="header">
-      <a @click="$router.push('/alunos')">Alunos</a>
-      <span>Ola {{nome}}</span>
-    </div>
+    <Header></Header>
     <ul>
       <li v-for="aula in aulas">
         <h2>{{aula.dia}} - {{aula.hora}}Hrs</h2>
@@ -20,10 +17,13 @@
 <script>
 import axios from 'axios';
 import { mapMutations } from 'vuex';
-
+import Header from '../components/Header.vue'
 
 export default{
   name: 'Index',
+  components: {
+    Header
+  },
   data(){
     return{
       aulas: [],
@@ -118,22 +118,4 @@ export default{
 }
 </script>
 
-<style lang="scss">
-.header{
-  color: #ccc;
-  background-color: $primary;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  text-align: right;
-  padding: 10px 0;
-}
-.header span{
-  padding: 10%;
-}
-ul{
-  list-style: none;
-  background-color: $secondary;
-}
-</style>
+

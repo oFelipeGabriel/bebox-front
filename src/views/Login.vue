@@ -4,21 +4,21 @@
               <div class="login100-form validate-form">
                   <img src="../assets/img/logo.png" alt="Bebox" class="logo">
 
-                  <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                      <input class="input100" type="text" v-model="cpf" placeholder="CPF">
+                  <div class="wrap-input100 validate-input">
+                      <input :class="'input100 '+inputErro" type="text" v-model="cpf" placeholder="CPF">
                       <span class="focus-input100-1"></span>
                       <span class="focus-input100-2"></span>
                   </div>
 
                   <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
-                      <input class="input100" type="password" v-model="senha" placeholder="Senha">
+                      <input :class="'input100 '+inputErro" type="password" v-model="senha" placeholder="Senha">
                       <span class="focus-input100-1"></span>
                       <span class="focus-input100-2"></span>
                   </div>
                   <span v-show="invalid" class="invalid-login">Login inválido</span>
                   <div class="container-login100-form-btn m-t-20">
                       <button class="login100-form-btn" @click="logar">
-                          ENTRAR
+                          ENTRAR <b-spinner v-show="logando" class="ml-3" label="Spinning"></b-spinner>
                       </button>
                   </div>
 
@@ -43,7 +43,9 @@ export default{
       cpf: '',
       senha: '',
       is_admin: false,
-      invalid: false
+      invalid: false,
+      inputErro: '',
+      logando: false
     }
   },
   methods:{
@@ -59,6 +61,7 @@ export default{
     },
     logar(){
       let app = this;
+      this.logando = true
       axios.post('logando/', {'username':this.cpf, 'password':this.senha}).then(function(res){
         app.setToken(res.headers.token)
         app.setUsuario(res.data)
@@ -70,8 +73,10 @@ export default{
         }
       }).catch(err => {
         let status = err.response.status
-        if(status == 400){
+        if(status == 400 || status == 401){
+            app.inputErro = 'input-erro'
           app.invalid = true;
+          app.logando = false
         }
       })
     }
@@ -185,7 +190,9 @@ export default{
   textarea:-ms-input-placeholder {
       color: #666666;
   }
-
+.input-erro{
+    border: 1px solid $accent;
+}
   button {
       outline: none !important;
       border: none;

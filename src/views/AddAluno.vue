@@ -1,7 +1,7 @@
 <template>
   <div class="">
   <ul>
-    <li>Nome: <input type="text" v-model="nome"></li>
+    <li>Nome: <b-form-input type="text" v-model="nome"></b-form-input></li>
     <li>E-Mail: <input type="email" v-model="email"></li>
     <li>CPF:: <input type="text" v-model="cpf"></li>
     <li>Data de Nascimento: <input type="date" v-model="data_nasc"></li>
