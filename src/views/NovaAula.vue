@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderAdmin></HeaderAdmin>
-  <div class="row d-flex justify-content-center">
+  <div class="row d-flex justify-content-center w-100 pt-5">
     <div class="card col-md-10 py-3">
       <div class="form-group">
         <label class="w-100 text-left">Dia: </label>

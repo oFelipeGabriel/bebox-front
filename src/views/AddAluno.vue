@@ -1,25 +1,52 @@
 <template>
-  <div class="">
-  <ul>
-    <li>Nome: <b-form-input type="text" v-model="nome"></b-form-input></li>
-    <li>E-Mail: <input type="email" v-model="email"></li>
-    <li>CPF:: <input type="text" v-model="cpf"></li>
-    <li>Data de Nascimento: <input type="date" v-model="data_nasc"></li>
-    <li>Endereço: <input type="text" v-model="endereco"></li>
-    <li>Telefone: <input type="text" v-model="telefone"></li>
-    <li>Administrador: <input type="checkbox" v-model="admin"></li>
-    <button @click="cadastrar">Cadastrar</button>
-  </ul>
+  <div>
+    <HeaderAdmin></HeaderAdmin>
+    <div class="row d-flex justify-content-center">
+    <div class="card col-md-10 py-3">
+        <div class="form-group">
+          <label class="w-100 text-left">Nome: </label>
+          <b-form-input type="text" v-model="nome"></b-form-input>
+        </div>
+        <div class="form-group">
+          <label class="w-100 text-left">E-Mail: </label>
+          <b-form-input type="email" v-model="email"></b-form-input>
+        </div>
+        <div class="form-group">
+          <label class="w-100 text-left">CPF: </label>
+          <b-form-input type="text" v-model="cpf"></b-form-input>
+        </div>
+        <div class="form-group">
+          <label class="w-100 text-left">Data de Nascimento: </label>
+          <b-form-input type="date" v-model="data_nasc"></b-form-input>
+        </div>
+        <div class="form-group">
+          <label class="w-100 text-left">Endereço: </label>
+          <b-form-input type="text" v-model="endereco"></b-form-input>
+        </div>
+        <div class="form-group">
+          <label class="w-100 text-left">Telefone: </label>
+          <b-form-input type="text" v-model="telefone"></b-form-input>
+        </div>
+        <div class="form-group border rounded pl-1">
+          <label class="w-25 text-left float-left mt-2">Administrador: </label>
+          <b-form-checkbox type="checkbox" class="w-25 text-left mt-2" v-model="admin"></b-form-checkbox>
+        </div>
+        <b-button @click="cadastrar">Cadastrar</b-button>
+    </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { mapMutations } from 'vuex';
-
+import HeaderAdmin from '../components/HeaderAdmin.vue'
 
 export default{
   name: 'Alunos',
+  components: {
+    HeaderAdmin
+  },
   data(){
     return{
       nome: '',
@@ -30,7 +57,7 @@ export default{
       data_nasc: '',
       telefone: '',
       endereco: '',
-      admin: true
+      admin: false
     }
   },
   methods:{

@@ -1,31 +1,18 @@
 <template>
   <div>
     <HeaderAdmin></HeaderAdmin>
-    
-    <div class="table border d-flex table col-md-12">
-      <div class="col-md-4 font-weight-bolder text-center">
-        Dia
-      </div>
-      <div class="col-md-4 font-weight-bolder text-center">
-        Hora
-      </div>
-      <div class="col-md-4 font-weight-bolder text-center">
-        Quantidade máxima
-      </div>
-    </div>
-    <div  v-for="aula in aulas">
-      <div class="tabela">        
-        <div>{{aula.dia}}</div>
-        <div>{{setHour(aula.hora)}} Hrs</div>
-        <div>{{aula.quantidade}}</div>
-      </div>
-      <ul>
-        <li v-for="aluno in aula.alunos">
-          <div>{{aluno.nome}}</div>
-        </li>
-      </ul>
+    <div class="pt-3 px-3">
+    <div class="card">
+      <b-table responsive striped hover :items="aulas" :fields="fields">
+        <template v-slot:cell(alunos)="data">
+          <ul>
+            <li v-for="a in data.item.alunos">{{a.nome}}</li>
+          </ul>
+        </template>
 
-  </div>
+      </b-table>
+    </div>
+    </div>
 </div>
 </template>
 
@@ -43,7 +30,13 @@ export default{
     return{
       aulas: [],
       meses: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-      
+      fields:[
+        {key:'dia', label: 'Dia'},
+        {key: 'hora', label: 'Hora'},
+        {key: 'quantidade', label:'Quantidade'},
+        {key: 'checked', label: 'Inscritos'},
+        {key:'alunos', label: 'Alunos'}
+      ]
     }
   },
   methods:{

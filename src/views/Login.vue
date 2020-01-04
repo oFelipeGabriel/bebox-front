@@ -5,6 +5,7 @@
                   <img src="../assets/img/logo.png" alt="Bebox" class="logo">
 
                   <div class="wrap-input100 validate-input">
+                      {{url}}
                       <input :class="'input100 '+inputErro" type="text" v-model="cpf" placeholder="CPF">
                       <span class="focus-input100-1"></span>
                       <span class="focus-input100-2"></span>
@@ -30,16 +31,12 @@
 <script>
 import axios from 'axios';
 import { mapMutations } from 'vuex';
-export const AXIOS = axios.create({
-  baseURL: 'http://localhost:8082',
-  headers: {
-    'Content-Type':'application/json'
-  }
-})
+
 export default{
   name: 'Login',
   data(){
     return{
+        url: axios.defaults.baseURL,
       cpf: '',
       senha: '',
       is_admin: false,

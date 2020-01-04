@@ -16,7 +16,7 @@ Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
 //axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
-axios.defaults.baseURL = 'http://localhost:8082/api/'
+axios.defaults.baseURL = process.env.VUE_APP_ROOT_URL
 axios.defaults.withCredentials = true;
 // axios.interceptors.request.use(config => {
 //   if(store.state.token) {

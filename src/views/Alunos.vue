@@ -1,43 +1,29 @@
 <template>
-  <div class="">
-  <a href="/alunos/novo">Novo</a>
-  <a href="/aulas">Ver aulas</a>
-    <table>
-      <tr>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>CPF</th>
-        <th>Plano</th>
-        <th>Vencimento</th>
-        <th>Data de nascimento</th>
-        <th>Telefone</th>
-        <th>Endereço</th>
-      </tr>
-    <tr v-for="aluno in alunos">
-      <td>{{aluno.nome}}</td>
-      <td>{{aluno.email}}</td>
-      <td>{{aluno.cpf}}</td>
-      <td>{{aluno.plano}}</td>
-      <td>{{aluno.vencimento}}</td>
-      <td>{{aluno.data_nascimento}}</td>
-      <td>{{aluno.telefone}}</td>
-      <td>{{aluno.endereco}}</td>
-    </tr>
-
-  </table>
+  <div>
+    <HeaderAdmin></HeaderAdmin>
+    <div class="card col-md-12">
+      <b-table responsive striped hover :items="alunos" :fields="fields"></b-table>
+      
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { mapMutations } from 'vuex';
-
+import HeaderAdmin from '../components/HeaderAdmin.vue'
 
 export default{
   name: 'Alunos',
+  components: {
+    HeaderAdmin
+  },
   data(){
     return{
-      alunos: []
+      alunos: [],
+      fields:[
+        'nome', 'email', 'endereco', 'telefone', 'cpf'
+      ]
     }
   },
   methods:{
@@ -45,7 +31,7 @@ export default{
   },
   mounted(){
     let app = this;
-    axios.get('usuario/getAllAdmin').then(function(res){
+    axios.get('usuario/getAll').then(function(res){
       console.log(res)
       app.alunos = res.data;
     }).catch(function(error){

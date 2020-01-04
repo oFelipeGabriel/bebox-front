@@ -1,17 +1,24 @@
 <template>
     <div class="header d-flex px-4">
       <transition name="slide-fade">
-        <ul class="menu" v-if="showSidebar">
+        <ul class="menu pl-2" v-if="showSidebar">
           <span class="close-menu pointer" @click="showBar"><i class="fas fa-times"></i></span>
-          <li><span @click="$router.push('/admin/aulas')">Ver Aulas</span></li>
-          <li><span @click="$router.push('/alunos/novo')">Novo aluno</span></li>
-          <li><span @click="$router.push('/admin/nova_aula')">Nova aula</span></li>
+          <li class="px-4 pt-0 pb-2 border-bottom"><img src="../assets/img/logo.png" alt="Bebox - Desafiando você a viver melhor" class="logo-sidebar"></li>
+          <li @click="$router.push('/admin/aulas')" class="border-bottom"><span>Ver Aulas</span></li>
+          <li @click="$router.push('/alunos')" class="border-bottom"><span>Ver Alunos</span></li>
+          <li @click="$router.push('/alunos/novo')" class="border-bottom"><span>Novo aluno</span></li>
+          <li @click="$router.push('/admin/nova_aula')" class="border-bottom"><span>Nova aula</span></li>
         </ul>
         </transition>
-      <div class=" w-50 text-left">
+      <div class=" col-md-4 text-left pt-2">
         <span class="border rounded p-2 pointer" @click="showBar"><i class="fas fa-bars"></i></span>
       </div>
-      <span class="w-50 ">Olá {{nome}}</span>
+      <div class="col-md-4 text-center secondary-bg">
+        <img src="../assets/img/logo.png" alt="Bebox - Desafiando você a viver melhor" class="logo-header">
+      </div>
+      <b-dropdown :text="'Olá, '+nome" id="drop-nome" block variant="primary-base" offset="55" class="col-md-4 pt-1 text-right">
+        <b-dropdown-item @click="$store.commit('logout')">Logout</b-dropdown-item>
+      </b-dropdown>
     </div>
 </template>
 
@@ -61,8 +68,30 @@ export default{
   top: 0;
   left: 0;
   width: 100%;
+  height: 60px;
   text-align: right;
   padding: 10px 0;
+}
+.logo-header{
+  height: 100%;
+}
+.logo-sidebar{
+  height: 50px;
+}
+.secondary-bg{
+  background-color: $secondary;
+  border-radius: 10px;
+}
+#drop-nome button{
+  background-color: $primary;
+  border: 0;
+  text-align: right;
+}
+.dropdown-menu{
+  right: 0 !important;
+}
+.btn-primary-base{
+  color: $secondary !important;
 }
 ul{
   list-style: none;
@@ -88,6 +117,7 @@ ul{
   position: fixed;
   background-color: $secondary;
   z-index: 100;
+  border: 6px solid $primary;
 }
 .menu li{
   padding: 20px 5px;
