@@ -6,7 +6,7 @@
       <b-table responsive striped hover :items="aulas" :fields="fields">
         <template v-slot:cell(alunos)="data">
           <ul>
-            <li v-for="a in data.item.alunos">{{a.nome}}</li>
+            <li v-for="a in data.item.alunos" v-bind:key="a">{{a.nome}}</li>
           </ul>
         </template>
 
@@ -18,7 +18,6 @@
 
 <script>
 import axios from 'axios';
-import { mapMutations } from 'vuex';
 import HeaderAdmin from '../components/HeaderAdmin.vue'
 
 export default{
@@ -52,18 +51,16 @@ export default{
   },
   mounted(){
     let app = this;
-    let admin = this.$store.getters.isAdmin
     axios.get('aula/getAll').then(function(res){
-      console.log(res)
       app.aulas = res.data;
-    }).catch(function(error){
-      console.log(error)
-    })
+    })//.catch(function(error){
+      //console.log(error)
+    //})
   },
   computed:{
     isAdmin:{
       get(){
-        return store.getters.isAdmin
+        return this.$store.getters.isAdmin
       }
     },
     token:{

@@ -50,10 +50,6 @@ export default{
      'setUserid',
      'setAdmin'
    ]),
-    validaAdmin(id){
-      let app = this;
-      
-    },
     logar(){
       let app = this;
       this.logando = true

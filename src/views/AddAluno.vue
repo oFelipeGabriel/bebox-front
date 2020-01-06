@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderAdmin></HeaderAdmin>
-    <div class="row d-flex justify-content-center">
+    <div class="row d-flex justify-content-center px-3">
     <div class="card col-md-10 py-3">
         <div class="form-group">
           <label class="w-100 text-left">Nome: </label>
@@ -27,8 +27,16 @@
           <label class="w-100 text-left">Telefone: </label>
           <b-form-input type="text" v-model="telefone"></b-form-input>
         </div>
-        <div class="form-group border rounded pl-1">
-          <label class="w-25 text-left float-left mt-2">Administrador: </label>
+        <div class="form-group">
+          <label class="w-100 text-left">Valor mensalidade: </label>
+          <b-form-input type="number" v-model="mensalidade"></b-form-input>
+        </div>
+        <div class="form-group">
+          <label class="w-100 text-left">Vencimento da mensalidade: </label>
+          <b-form-input type="date" v-model="data_vencimento"></b-form-input>
+        </div>
+        <div v-if="ie_editar != null" class="form-group border rounded pl-1 mt-2">
+          <label class="col-md-4 text-left float-left mt-2">Administrador: </label>
           <b-form-checkbox type="checkbox" class="w-25 text-left mt-2" v-model="admin"></b-form-checkbox>
         </div>
         <b-button @click="cadastrar">Cadastrar</b-button>
@@ -39,7 +47,6 @@
 
 <script>
 import axios from 'axios';
-import { mapMutations } from 'vuex';
 import HeaderAdmin from '../components/HeaderAdmin.vue'
 
 export default{
@@ -57,6 +64,9 @@ export default{
       data_nasc: '',
       telefone: '',
       endereco: '',
+      mensalidade: '',
+      data_vencimento: '',
+      id_editar: null,
       admin: false
     }
   },
@@ -65,6 +75,7 @@ export default{
       let dados = {}
       let app = this;
       let d = new Date(this.data_nasc).toISOString();
+      let vencimento = new Date(this.data_vencimento).toISOString();
 
       dados.nome = this.nome;
       dados.email = this.email;
@@ -73,25 +84,50 @@ export default{
       dados.data_nasc = Date.parse(d);
       dados.telefone = this.telefone;
       dados.endereco = this.endereco;
-      console.log('antes', dados)
-      axios.post('usuario/novoUsuario', dados).then(res => {
-        console.log(dados)
-        console.log(res)
-        app.$router.push('/alunos')
-      }).catch(err => {
-        console.log('dados', dados)
-        console.log(err)
-      })
+      dados.data_vencimento = Date.parse(vencimento);
+      dados.mensalidade = this.mensalidade;
+      if(this.id_editar){
+        axios.put('usuario/editar/'+this.id_editar, dados).then(res => {
+          console.log(res)
+          app.$router.push('/alunos')
+        })
+      }else{
+        axios.post('usuario/novoUsuario', dados).then(() => {
+          app.$router.push('/alunos')
+        })//.catch(err => {
+        //   console.log(err)
+        // })  
+      }      
+    },
+    convertData(data){
+      if(data != null){
+        let date = data.split('/')
+        let d = date[0]
+        let m = date[1]
+        let a = date[2]
+        return a+'-'+m+'-'+d  
+      }else{
+        return null
+      }
+      
     }
   },
   mounted(){
-    //let app = this;
-    // axios.get('list_alunos/').then(function(res){
-    //   console.log(res)
-    //   app.alunos = res.data.results;
-    // }).catch(function(error){
-    //   console.log(error)
-    // })
+    let u = this.$store.getters.getUsuarioEditar
+    
+    if(u){
+      this.nome = u.nome
+      this.email = u.email
+      this.cpf = u.cpf
+      this.autorizacao = u.autorizacao
+      this.data_nasc = this.convertData(u.data_nascimento)
+      this.telefone = u.telefone
+      this.endereco = u.endereco
+      this.data_vencimento = this.convertData(u.dataVencimento)
+      this.mensalidade = u.valor_mensalidade
+      this.id_editar = u.id
+      this.$store.commit('setUsuarioEditarToNull')
+    }
   },
   computed:{
       token:{

@@ -1,5 +1,5 @@
 <template>
-    <div class="header d-flex px-4">
+    <div class="header d-flex">
       <transition name="slide-fade">
         <ul class="menu pl-2" v-if="showSidebar">
           <span class="close-menu pointer" @click="showBar"><i class="fas fa-times"></i></span>
@@ -70,7 +70,7 @@ export default{
   width: 100%;
   height: 60px;
   text-align: right;
-  padding: 10px 0;
+  padding: 10px 0.5rem;
 }
 .logo-header{
   height: 100%;
@@ -89,6 +89,7 @@ export default{
 }
 .dropdown-menu{
   right: 0 !important;
+  min-width: 5rem !important;
 }
 .btn-primary-base{
   color: $secondary !important;
