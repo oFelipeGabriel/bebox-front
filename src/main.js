@@ -18,12 +18,12 @@ Vue.config.productionTip = false
 //axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
 axios.defaults.baseURL = process.env.VUE_APP_ROOT_URL
 axios.defaults.withCredentials = true;
-// axios.interceptors.request.use(config => {
-//   if(store.state.token) {
-//     config.headers.Authorization = 'Bearer '+store.state.token
-//   }
-//   return config
-// })
+axios.interceptors.request.use(config => {
+  if(store.state.token) {
+    config.headers.Authorization = 'Bearer '+store.state.token
+  }
+  return config
+})
 
 axios.interceptors.response.use(res => {
     return res
