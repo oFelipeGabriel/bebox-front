@@ -5,7 +5,7 @@
       <b-table responsive striped hover :items="alunos" :fields="fields" @row-clicked="editarAluno">
        
         <template v-slot:cell(pag)="data">
-          <b-button class="btn btn-positive" @click="modalPagamento=true"><i class="fas fa-dollar-sign"></i></i></b-button>
+          <b-button class="btn btn-positive" @click="verPagamento(data)"><i class="fas fa-dollar-sign"></i></i></b-button>
         </template>
         <template v-slot:cell(actions)="data">
           <b-button v-if="data.item.id == user.id" disabled class="btn btn-danger" ><i class="fas fa-times"></i></b-button>
@@ -14,33 +14,60 @@
         
       </b-table>      
     </div>
-    <b-modal id="modal-1" title="Pagamento" v-model="modalPagamento">
-      <div class="form-group"> 
-        <label>Data</label>
-        <b-form-input></b-form-input>
-      </div >
-      <div class="form-group">
-        <label>Valor</label>
-        <b-form-input></b-form-input>
-      </div>
-      <div class="form-group">
-        <label>Forma de pagamento</label>
-        <b-form-select></b-form-select>
+    <b-modal id="modal-1" title="Pagamentos" v-model="modalPagamento">
+      <h3 v-if="usuarioSelec">{{usuarioSelec.nome}}</h3>
+      <b-table v-if="!novoPagamento" :items="pagamentos"></b-table>
+      <div v-else>
+        <div class="form-group"> 
+          <label>Data</label>
+          <b-form-input type="date" v-model="pagamento.data"></b-form-input>
+        </div >
+        <div class="form-group">
+          <label>Valor</label>
+          <b-form-input type="number" v-model="pagamento.valor"></b-form-input>
+        </div>
+        <div class="form-group">
+          <label>Forma de pagamento</label>
+          <b-form-select v-model="pagamento.forma" :options="optItemsPagamentos"></b-form-select>
+        </div>
+        
       </div>
       <template v-slot:modal-footer>
-        <div class="w-100">
+        <div class="w-100" v-if="!novoPagamento">
           <b-button
             variant="positive"
             size="sm"
             class="float-right font-w"
-            @click="show=false"
+            @click="novoPagamento=!novoPagamento"
+          >
+            Novo
+          </b-button>
+        </div>
+        <div v-else>
+          
+          <b-button
+            variant="positive"
+            size="sm"
+            class="float-right font-w ml-3"
+            @click="inserePagamento"
           >
             Confirma
+          </b-button>
+          <b-button
+            variant="secondary"
+            size="sm"
+            class="float-right font-w"
+            @click="novoPagamento=false"
+          >
+            Voltar
           </b-button>
         </div>
       </template>
     </b-modal>
   </div>
+  <!-- 
+    
+  -->
 </template>
 
 <script>
@@ -62,7 +89,20 @@ export default{
         {key:'pag', label:'Pagamento'},
         {key:'actions', label:'Apagar'}
       ],
-      modalPagamento: false
+      modalPagamento: false,
+      pagamentos: [],
+      novoPagamento: false,
+      usuarioSelec: null,
+      optItemsPagamentos: [
+        {text: 'Dinheiro', value: 'Dinheiro'},
+        {text: 'Debito', value: 'Debito'},
+        {text: 'Credito', value: 'Credito'},
+      ],
+      pagamento: {
+        valor: '',
+        data: '',
+        forma: ''
+      }
     }
   },
   methods:{
@@ -81,6 +121,28 @@ export default{
         app.alunos = res.data;
       })//.catch(function(error){
       //   console.log(error)
+      // })
+    },
+    verPagamento(data){
+      this.novoPagamento = false
+      let app = this
+      this.usuarioSelec = data.item
+      app.modalPagamento = true
+      axios.get('pagamento/get/'+data.item.id).then(function(res){
+        
+        app.pagamentos = res.data
+      })//.catch(function(error){
+      //   console.log(error)
+      // })
+    },
+    inserePagamento(){
+      let app = this
+      let d = new Date(this.pagamento.data).toISOString();
+      this.pagamento.data = Date.parse(d)
+      axios.post('pagamento/novo/'+this.usuarioSelec.id, this.pagamento).then( res => {
+        app.novoPagamento = false
+      })//.catch( err => {
+      //   console.log(err)
       // })
     }
   },

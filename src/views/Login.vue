@@ -66,11 +66,14 @@ export default{
         let status = err.response.status
         if(status == 400 || status == 401){
             app.inputErro = 'input-erro'
-          app.invalid = true;
-          app.logando = false
+            app.invalid = true;
+            app.logando = false
         }
       })
     }
+  },
+  mounted(){
+      this.$store.dispatch('apagaToken')
   }
 }
 </script>

@@ -49,6 +49,11 @@ export default new Vuex.Store({
     },
     setUsuarioEditarToNull (state){
       state.usuarioEditar = null
+    },
+    apagaToken (state) {
+      state.token = null
+      state.usuario = null
+      state.temToken = false
     }
   },
   actions: {
@@ -57,6 +62,9 @@ export default new Vuex.Store({
     },
     isAdmin:()=>{
       localStorage.getItem('admin')
+    },
+    apagaToken: (context)=>{
+      context.commit('apagaToken')
     }
   },
   getters:{
