@@ -1,7 +1,6 @@
 <template>
-    <div class="header">
+    <div class="header d-flex">
       <div class=" col-md-4 text-left pt-2">
-        <span class="border rounded p-2 pointer" @click="showBar"><i class="fas fa-bars"></i></span>
       </div>
       <div class="col-md-4 text-center secondary-bg">
         <img src="../assets/img/logo.png" alt="Bebox - Desafiando você a viver melhor" class="logo-header">
@@ -17,6 +16,7 @@ export default{
     name: 'Header',
     data(){
         return{
+          showSidebar: false,
         }
     },
     computed:{
@@ -41,8 +41,14 @@ export default{
         }
       }
     },
+    methods:{
+      showBar(){
+      this.showSidebar = !this.showSidebar
+    }
+    }
 }
 </script>
+
 
 <style lang="scss">
   .header{
@@ -54,10 +60,83 @@ export default{
     width: 100%;
     height: 60px;
     text-align: right;
-    padding: 10px 0;
+    padding: 10px 0.5rem;
+  }
+  .logo-header{
+    height: 100%;
+  }
+  .logo-sidebar{
+    height: 50px;
+  }
+  .secondary-bg{
+    background-color: $secondary;
+    border-radius: 10px;
+  }
+  #drop-nome button{
+    background-color: $primary;
+    border: 0;
+    text-align: right;
+  }
+  .dropdown-menu{
+    right: 0 !important;
+    min-width: 5rem !important;
+  }
+  .btn-primary-base{
+    color: $secondary !important;
   }
   ul{
     list-style: none;
     background-color: $secondary;
   }
-  </style>
+  .pointer{
+    cursor: pointer;
+  }
+  .close-menu{
+    position: absolute;
+    color: #252626;
+    right: 10px;
+    top: 3px;
+  }
+  .menu{
+    width: 175px;
+    height: 100%;
+    padding-top: 20px;
+    padding-right: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background-color: $secondary;
+    z-index: 100;
+    border: 6px solid $primary;
+  }
+  .menu li{
+    padding: 20px 5px;
+    text-align: left;
+    transition: 0.7s ease;
+  }
+  .menu li span{
+    text-decoration: none;
+    cursor: pointer;
+    color: $primary;
+    font-weight: bolder;
+    text-align: left
+  }
+  .menu li:hover{
+    background-color: $primary;
+  }
+  .menu li:hover span{
+    color: $secondary
+  }
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .8s ease/*cubic-bezier(1.0, 0.5, 0.8, 1.0)*/;
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translateX(-150px);
+    opacity: 0;
+  }
+    </style>

@@ -16,6 +16,14 @@
     </div>
     <b-modal id="modal-1" title="Pagamentos" v-model="modalPagamento">
       <h3 v-if="usuarioSelec">{{usuarioSelec.nome}}</h3>
+      <div class="form-group">
+        <label>Filtrar forma de pagamento:</label>
+        <b-form-select v-if="!novoPagamento" 
+          :options="optItemsPagamentos" 
+          v-model="filtroForma"
+          @change="filtraForma"></b-form-select>
+      </div>
+      
       <b-table v-if="!novoPagamento" :items="pagamentos"></b-table>
       <div v-else>
         <div class="form-group"> 
@@ -94,6 +102,7 @@ export default{
       novoPagamento: false,
       usuarioSelec: null,
       optItemsPagamentos: [
+        {text: 'Selecione', value: '', disabled: true, selected: true},
         {text: 'Dinheiro', value: 'Dinheiro'},
         {text: 'Debito', value: 'Debito'},
         {text: 'Credito', value: 'Credito'},
@@ -102,7 +111,8 @@ export default{
         valor: '',
         data: '',
         forma: ''
-      }
+      },
+      filtroForma: ''
     }
   },
   methods:{
@@ -113,6 +123,12 @@ export default{
       let app = this;
       axios.delete('usuario/delete/'+data.item.id+'/').then(res => {
         app.getUsuarios()
+      })
+    },
+    filtraForma(val){
+      let app = this
+      axios.get('pagamento/'+val+'/'+this.usuarioSelec.id).then(res => {
+        app.pagamentos = res.data
       })
     },
     getUsuarios(){

@@ -76,9 +76,7 @@ export default{
   },
   mounted(){
     let app = this;
-    console.log(this.$store.getters.getNome)
     axios.get('aula/getAll').then(function(res){
-      console.log(res.data)
       app.aulas = res.data
 
     }).catch(function(error){
