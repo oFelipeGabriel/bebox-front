@@ -75,6 +75,9 @@ export default new Vuex.Store({
         router.push('/login');
       }
     },
+    getUsuario: state => {
+      return state.usuario
+    },
     getNome: state => {      
       return state.usuario.nome
     },
