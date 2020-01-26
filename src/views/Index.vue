@@ -1,25 +1,28 @@
 <template>
   <div class="">
     <Header></Header>
-    <ul>
+    <ul class="pl-4">
       <li v-for="aula in aulas" class="li-aulas">
-        <div class="card mr-5 p-3 li-aulas-div">
-          <div class="col-md-4 d-flex flex-row px-0">
-            <div class="card border rounded col-sm-2 col-md-5 data-card">
+        <div class="card mr-4 p-3 li-aulas-div ">
+          <div class="col-md-4 d-flex flex-row px-0 mb-1">
+            <div class="border rounded col-sm-5 col-md-5 pt-2 data-card">
               <h1 class="mb-0">{{getDia(aula.dia)}}</h1>
               <h3 class="mb-1">{{getMes(aula.dia)}}</h3>
             </div>
-            <div class="col-md col-sm-6">
-              <h2 class="mt-3 font-3">{{aula.hora}}Hrs</h2>
+            
+            <div class="col-md col-sm-6 px-0">
+              <h2 class="mt-1 font-3 px-3">{{aula.hora}}Hrs</h2>
+              <div class="col-md px-0  dados-aula text-right mb-0">
+                <h4 class=" pr-2 mb-0">Total: {{aula.quantidade}}</h4>
+                <h5 class="mb-1 pr-2">Ja inscritos: {{aula.alunos.length}}</h5>
+              </div>
             </div>
+            
           </div>
-          <div class="col-md d-flex flex-row mt-3 text-right  border rounded dados-aula">
-            <div class="col-md-6">
-              <h2>Total: {{aula.quantidade}}</h2>
-              <h4>Ja inscritos: {{aula.alunos.length}}</h4>
-            </div>
-            <div class="col-md p-0 border rounded text-center my-2 btn-fazer">
-              <h2 v-if="!verificaAula(aula) && !verificaLimite(aula)" class="btn-limite p-3 m-0">Limite atingido</h2>
+          <div class="row mt-1 mx-1 text-right  border rounded dados-aula px-3">
+            
+            <div class="col-md-4 p-0 border rounded text-center my-2 btn-fazer">
+              <h2 v-if="!verificaAula(aula) && !verificaLimite(aula)" class="btn-limite px-2 py-3 m-0 rounded">Limite atingido</h2>
               <h3 v-else-if="!verificaAula(aula)" @click="fazerCheckin(aula)" class="btn-checkin p-3 m-0">CHECK-IN</h3>
               <h2 v-else @click="desfazerCheckin(aula)" class="btn-desfazer p-3 m-0">Desfazer</h2>
             </div>
@@ -54,18 +57,22 @@ export default{
   },
   methods:{
     fazerCheckin(aula){
-      aula.alunos.push(this.usuario.id)
-      axios.post('aula/addAluno/'+aula.id+'/'+this.usuario.id+'/', aula).then(res => {
+      let app = this
+      //aula.alunos.push(this.usuario.id)
+      axios.post('aula/addAluno/'+aula.id+'/'+this.usuario.id+'/').then(res => {
         console.log(res)
+        app.aulas = res.data
       }).catch(err => {
         console.log(err)
       })
     },
     desfazerCheckin(aula){
-      let index = aula.alunos.indexOf(this.usuario.id);
-      aula.alunos.splice(index, 1);
-      axios.put('list_aulas/'+aula.id+'/', aula).then(res => {
-        console.log(res)
+      // let index = aula.alunos.indexOf(this.usuario.id);
+      // aula.alunos.splice(index, 1);
+      let app = this
+      let link = 'aula/removeAluno/'+aula.id+'/'+this.usuario.id+'/'
+      axios.post(link).then(res => {
+        app.aulas = res.data
       }).catch(err => {
         console.log(err)
       })
@@ -78,7 +85,6 @@ export default{
       return this.meses[mes-1]
     },
     verificaLimite(aula){
-        console.log('alunos', aula.alunos.length, 'aulas', aula.quantidade)
       if(aula.quantidade == aula.alunos.length){
         return false
       }else{
@@ -162,7 +168,7 @@ export default{
   background-color: $secondary;
 }
 .font-3{
-  font-size: 3rem;
+  font-size: 9vw;
 }
 .btn-fazer{
   cursor: pointer;
@@ -174,6 +180,15 @@ export default{
 }
 .btn-checkin{
   background-color: #fff;
+}
+.btn-limite{
+  background-color: $negative;
+  color: #fff
+}
+@media screen and (min-width: 900px) {
+  .font-3 {
+     font-size: 3rem;
+  }
 }
 </style>
 
