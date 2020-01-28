@@ -135,6 +135,7 @@ export default{
       let app = this;
       axios.get('usuario/getAll').then(function(res){
         app.alunos = res.data;
+        console.log(res)
       })//.catch(function(error){
       //   console.log(error)
       // })
