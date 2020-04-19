@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="p-2">
     <router-view></router-view>
   </div>
 </template>
@@ -20,7 +20,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 40px;
   background-color: $secondary;
 }
 body{

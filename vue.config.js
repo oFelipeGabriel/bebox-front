@@ -10,6 +10,10 @@ module.exports = {
         prependData: `@import "@/css/app.scss";`
       }
     }
+  },
+  pwa:{
+    name: 'Bebox',
+    themeColor: '#e91e63'
   }
 };
 // 

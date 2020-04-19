@@ -2,6 +2,11 @@
   <div>
     <HeaderAdmin></HeaderAdmin>
     <div class="row d-flex justify-content-center px-3">
+      <div class="row col-md-10 pl-0 mb-2">
+        <div class="col-md-4 pl-0 text-left">
+          <button type="button" name="button" class="btn btn-primary" @click="$router.go(-1)">Voltar</button>
+        </div>
+      </div>
     <div class="card col-md-10 py-3">
         <div class="form-group">
           <label class="w-100 text-left">Nome: </label>
@@ -80,7 +85,7 @@ export default{
       dados.nome = this.nome;
       dados.email = this.email;
       dados.cpf = this.cpf;
-      dados.autorizacao = this.admin;      
+      dados.autorizacao = this.admin;
       dados.data_nasc = Date.parse(d);
       dados.telefone = this.telefone;
       dados.endereco = this.endereco;
@@ -96,8 +101,8 @@ export default{
           app.$router.push('/alunos')
         })//.catch(err => {
         //   console.log(err)
-        // })  
-      }      
+        // })
+      }
     },
     convertData(data){
       if(data != null){
@@ -105,16 +110,16 @@ export default{
         let d = date[0]
         let m = date[1]
         let a = date[2]
-        return a+'-'+m+'-'+d  
+        return a+'-'+m+'-'+d
       }else{
         return null
       }
-      
+
     }
   },
   mounted(){
     let u = this.$store.getters.getUsuarioEditar
-    
+
     if(u){
       this.nome = u.nome
       this.email = u.email
