@@ -47,12 +47,13 @@ export default{
       let m = hora.split(':')[1]
       return h+':'+m
     },
-    
+
   },
   mounted(){
     let app = this;
-    axios.get('aula/getAll').then(function(res){
+    axios.get('aula/getAllDone').then(function(res){
       app.aulas = res.data;
+      console.log(res.data)
     })//.catch(function(error){
       //console.log(error)
     //})
