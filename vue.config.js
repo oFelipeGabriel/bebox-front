@@ -13,7 +13,8 @@ module.exports = {
   },
   pwa:{
     name: 'Bebox',
-    themeColor: '#e91e63'
+    themeColor: '#252626',
+    manifestPath: 'img/icons'
   }
 };
 // 
