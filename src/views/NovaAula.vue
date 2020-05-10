@@ -50,12 +50,11 @@ export default{
       dados.alunos_id = [];
       axios.post('aula/novaAula', dados).then(res => {
         app.$router.push('/admin/aulas')
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
       })
     }
   },
-  
+
   computed:{
       token:{
         get(){

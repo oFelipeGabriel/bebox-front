@@ -8,3 +8,31 @@ $positive  : #21BA45;
 $negative  : #C10015;
 $info      : #31CCEC;
 $warning   : #F2C037;
+
+.negative{
+  background-color: $negative;
+  border-radius: 15px;
+  .card{
+    background-color: transparent;
+    color: #ccc;
+    border-radius: 15px;
+  }
+}
+.info{
+  background-color: $info;
+  border-radius: 15px;
+  .card{
+    background-color: transparent;
+    color: $primary;
+    border-radius: 15px;
+  }
+}
+.warning{
+  background-color: $warning;
+  border-radius: 15px;
+  .card{
+    background-color: transparent;
+    color: $primary;
+    border-radius: 15px;
+  }
+}

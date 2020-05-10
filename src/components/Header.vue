@@ -2,7 +2,7 @@
     <div class="header d-flex">
       <div class=" col-md-4 text-left pt-2">
       </div>
-      <div class="col-md-4 text-center secondary-bg">
+      <div class="inner-header text-center secondary-bg">
         <img src="../assets/img/logo.png" alt="Bebox - Desafiando você a viver melhor" class="logo-header">
       </div>
       <b-dropdown :text="'Olá, '+nome" id="drop-nome" block variant="primary-base" offset="55" class="col-md-4 pt-1 text-right">
@@ -61,6 +61,9 @@ export default{
     height: 60px;
     text-align: right;
     padding: 10px 0.5rem;
+  }
+  .innser-header{
+    width: 30%;
   }
   .logo-header{
     height: 100%;

@@ -93,7 +93,6 @@ export default{
       dados.mensalidade = this.mensalidade;
       if(this.id_editar){
         axios.put('usuario/editar/'+this.id_editar, dados).then(res => {
-          console.log(res)
           app.$router.push('/alunos')
         })
       }else{

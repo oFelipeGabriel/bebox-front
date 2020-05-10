@@ -53,7 +53,6 @@ export default{
     let app = this;
     axios.get('aula/getAllDone').then(function(res){
       app.aulas = res.data;
-      console.log(res.data)
     })//.catch(function(error){
       //console.log(error)
     //})
