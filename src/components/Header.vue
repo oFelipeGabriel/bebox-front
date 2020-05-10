@@ -5,7 +5,7 @@
       <div class="inner-header text-center secondary-bg">
         <img src="../assets/img/logo.png" alt="Bebox - Desafiando você a viver melhor" class="logo-header">
       </div>
-      <b-dropdown :text="'Olá, '+nome" id="drop-nome" block variant="primary-base" offset="55" class="col-md-4 pt-1 text-right">
+      <b-dropdown :text="'Olá, '+nome.split(' ')[0]" id="drop-nome" block variant="primary-base" offset="55" class="col-md-4 pt-1 text-right">
         <b-dropdown-item @click="$store.commit('logout')">Logout</b-dropdown-item>
       </b-dropdown>
     </div>
