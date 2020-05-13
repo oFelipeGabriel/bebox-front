@@ -9,7 +9,7 @@
       </b-card>
     </div>
     <ul class="pl-4">
-      <li v-for="aula in aulas" class="li-aulas" v-bind:key="aula">
+      <li v-for="aula in aulas" class="li-aulas">
         <div class="card mr-4 p-3 li-aulas-div ">
           <div class="col-md-4 d-flex flex-row px-0 mb-1">
             <div class="border rounded col-sm-5 col-md-5 pt-2 data-card">
@@ -63,7 +63,8 @@ export default{
       let app = this
       //aula.alunos.push(this.usuario.id)
       axios.post('aula/addAluno/'+aula.id+'/'+this.usuario.id+'/').then(res => {
-        app.aulas = res.data
+        app.aulas = res.data.aulas
+       
       }).catch(() => {
       })
     },
@@ -73,7 +74,7 @@ export default{
       let app = this
       let link = 'aula/removeAluno/'+aula.id+'/'+this.usuario.id+'/'
       axios.post(link).then(res => {
-        app.aulas = res.data
+        app.aulas = res.data.aulas
 
       }).catch(() => {
       })
