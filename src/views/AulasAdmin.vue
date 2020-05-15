@@ -1,13 +1,16 @@
 <template>
   <div>
     <HeaderAdmin></HeaderAdmin>
-    <div class="pt-3 px-3">
+    <div class="pt-3 px-3 h600">
     <div class="card">
       <b-table responsive striped hover :items="aulas" :fields="fields">
         <template v-slot:cell(alunos)="data">
           <ul>
             <li v-for="a in data.item.alunos" v-bind:key="a">{{a.nome}}</li>
           </ul>
+        </template>
+        <template v-slot:cell(apagar)="data">
+          <a class="btn btn-danger" @click="removeAula(data.item)">Apagar</a>
         </template>
 
       </b-table>
@@ -34,7 +37,8 @@ export default{
         {key: 'hora', label: 'Hora'},
         {key: 'quantidade', label:'Quantidade'},
         {key: 'checked', label: 'Inscritos'},
-        {key:'alunos', label: 'Alunos'}
+        {key:'alunos', label: 'Alunos'},
+        {key: 'apagar', label: 'Apagar'}
       ]
     }
   },
@@ -47,7 +51,12 @@ export default{
       let m = hora.split(':')[1]
       return h+':'+m
     },
-
+    removeAula(aula){
+      let app = this;
+      axios.post('aula/removeAula/'+aula.id).then(res => {
+        app.aulas = res.data;
+      })
+    }
   },
   mounted(){
     let app = this;
@@ -82,7 +91,7 @@ export default{
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .hamb{
   width: 100%;
   text-align: center;
@@ -94,5 +103,14 @@ export default{
 .tabela div{
   flex: 1
 }
-
+.h600{
+  height: 600px;
+}
+.card{
+  max-height: 106%;
+    overflow-y: auto;
+}
+.btn-danger{
+  color: #dedede;
+}
 </style>
