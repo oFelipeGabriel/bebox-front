@@ -46,6 +46,13 @@
         </div>
         <b-button @click="cadastrar">Cadastrar</b-button>
     </div>
+    <div class="card col-md-10 py-3" v-if="id_editar != null">
+      <div class="form-group">
+        <label class="w-100 text-left">Senha: </label>
+        <b-form-input type="text" v-model="senha"></b-form-input>
+      </div>
+      <b-button @click="atualizaSenha">Atuaizar</b-button>
+    </div>
     </div>
   </div>
 </template>
@@ -72,7 +79,8 @@ export default{
       mensalidade: '',
       data_vencimento: '',
       id_editar: null,
-      admin: false
+      admin: false,
+      senha: ''
     }
   },
   methods:{
@@ -102,6 +110,14 @@ export default{
         //   console.log(err)
         // })
       }
+    },
+    atualizaSenha(){
+      let senha = {
+        'senha': this.senha
+      }
+      axios.put('/usuario/editarSenha/'+this.id_editar, senha).then(() => {
+        this.senha = ''
+      })
     },
     convertData(data){
       if(data != null){
