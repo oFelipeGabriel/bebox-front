@@ -40,7 +40,7 @@
           <label class="w-100 text-left">Vencimento da mensalidade: </label>
           <b-form-input type="date" v-model="data_vencimento"></b-form-input>
         </div>
-        <div v-if="id_editar == null" class="form-group border rounded pl-1 mt-2">
+        <div class="form-group border rounded pl-1 mt-2">
           <label class="col-md-4 text-left float-left mt-2">Administrador: </label>
           <b-form-checkbox type="checkbox" class="w-25 text-left mt-2" v-model="admin"></b-form-checkbox>
         </div>
@@ -100,7 +100,7 @@ export default{
       dados.data_vencimento = Date.parse(vencimento);
       dados.mensalidade = this.mensalidade;
       if(this.id_editar){
-        axios.put('usuario/editar/'+this.id_editar, dados).then(res => {
+        axios.put('usuario/editar/'+this.id_editar, dados).then( () => {
           app.$router.push('/alunos')
         })
       }else{
