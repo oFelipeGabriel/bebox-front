@@ -11,13 +11,13 @@
                   </div>
 
                   <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
-                      <input :class="'input100 '+inputErro" type="password" v-model="senha" placeholder="Senha">
+                      <input :class="'input100 '+inputErro" type="password" v-model="senha" placeholder="Senha" v-on:keyup.enter="logar">
                       <span class="focus-input100-1"></span>
                       <span class="focus-input100-2"></span>
                   </div>
                   <span v-show="invalid" class="invalid-login">Login inválido</span>
                   <div class="container-login100-form-btn m-t-20">
-                      <button class="login100-form-btn" @click="logar">
+                      <button class="login100-form-btn" @click="logar" >
                           ENTRAR <b-spinner v-show="logando" class="ml-3" label="Spinning"></b-spinner>
                       </button>
                   </div>

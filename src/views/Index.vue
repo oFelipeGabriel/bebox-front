@@ -9,7 +9,7 @@
       </b-card>
     </div>
     <ul class="pl-4">
-      <li v-for="aula in aulas" class="li-aulas">
+      <li v-for="aula in aulas" v-bind:key="aula" class="li-aulas">
         <div class="card mr-4 p-3 li-aulas-div ">
           <div class="col-md-4 d-flex flex-row px-0 mb-1">
             <div class="border rounded col-sm-5 col-md-5 pt-2 data-card">
@@ -37,7 +37,21 @@
         </div>
       </li>
     </ul>
+    <b-modal 
+      id="modal-no-backdrop" 
+      v-model="modal" 
+      hide-backdrop 
+      content-class="shadow" 
+      hide-header="true" 
+      hide-footer="true"
+      size="sm">
+        <div class="row text-center px-5">
+          <b-spinner label="Spinning"></b-spinner>
+          <h3 class="col-md-9">Carregando</h3>
+        </div>
+    </b-modal>
   </div>
+  
 </template>
 
 <script>
@@ -55,6 +69,7 @@ export default{
       id: null,
       message: '',
       classe: '',
+      modal: false,
       meses: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     }
   },
@@ -117,10 +132,12 @@ export default{
   },
   mounted(){
     let app = this;
-    axios.get(`aula/getAll/`+this.usuario.id).then(function(res){
+    this.modal = true;
+    axios.get(`aula/getAll/`+this.usuario.id).then((res) => {
       app.aulas = res.data.aulas
       app.message = res.data.message
-      app.classe = res.data.classe
+      app.classe = res.data.classe;
+      this.modal = false;
     }).catch(function(){
     })
     // if(this.$store.state.admin){
