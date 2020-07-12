@@ -23,7 +23,6 @@
 
 <script>
 import axios from 'axios';
-import { mapMutations } from 'vuex';
 import HeaderAdmin from '../components/HeaderAdmin.vue'
 
 export default{
@@ -42,13 +41,14 @@ export default{
   methods:{
     cadastrar(){
       let dados = {}
-      let d = new Date(this.dia).toISOString();
-      let app = this
-      dados.dia = Date.parse(d);
+      let d = new Date(this.dia)
+      let novaData = d.setUTCHours(0);
+      let app = this;
+      dados.dia = novaData;
       dados.hora = this.hora;
       dados.quantidade = this.quantidade;
       dados.alunos_id = [];
-      axios.post('aula/novaAula', dados).then(res => {
+      axios.post('aula/novaAula', dados).then(() => {
         app.$router.push('/admin/aulas')
       }).catch(() => {
       })

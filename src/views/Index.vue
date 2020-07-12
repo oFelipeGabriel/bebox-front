@@ -37,13 +37,14 @@
         </div>
       </li>
     </ul>
+    <b-button block @click="getAulas">Atualizar</b-button>
     <b-modal 
       id="modal-no-backdrop" 
       v-model="modal" 
       hide-backdrop 
       content-class="shadow" 
-      hide-header="true" 
-      hide-footer="true"
+      :hide-header="hide" 
+      :hide-footer="hide"
       size="sm">
         <div class="row text-center px-5">
           <b-spinner label="Spinning"></b-spinner>
@@ -66,6 +67,7 @@ export default{
   data(){
     return{
       aulas: [],
+      hide: true,
       id: null,
       message: '',
       classe: '',
@@ -128,18 +130,21 @@ export default{
       //   }
       // }
       // return false
+    },
+    getAulas(){
+      let app = this;
+      this.modal = true;
+      axios.get(`aula/getAll/`+this.usuario.id).then((res) => {
+        app.aulas = res.data.aulas
+        app.message = res.data.message
+        app.classe = res.data.classe;
+        this.modal = false;
+      }).catch(function(){
+      })
     }
   },
   mounted(){
-    let app = this;
-    this.modal = true;
-    axios.get(`aula/getAll/`+this.usuario.id).then((res) => {
-      app.aulas = res.data.aulas
-      app.message = res.data.message
-      app.classe = res.data.classe;
-      this.modal = false;
-    }).catch(function(){
-    })
+    this.getAulas();
     // if(this.$store.state.admin){
     //   this.$router.push('/admin/aulas')
     // }

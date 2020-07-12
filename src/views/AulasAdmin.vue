@@ -6,7 +6,7 @@
       <b-table responsive striped hover :items="aulas" :fields="fields">
         <template v-slot:cell(alunos)="data">
           <ul>
-            <li v-for="a in data.item.alunos" v-bind:key="a">{{a.nome}}</li>
+            <li v-for="a in data.item.alunos" v-bind:key="a.id">{{a.nome}}</li>
           </ul>
         </template>
         <template v-slot:cell(apagar)="data">
