@@ -11,7 +11,7 @@
       <b-table responsive striped hover :items="alunosFiltrados" :fields="fields" @row-clicked="editarAluno">
 
         <template v-slot:cell(pag)="data">
-          <b-button class="btn btn-positive" @click="verPagamento(data)"><i class="fas fa-dollar-sign"></i></i></b-button>
+          <b-button class="btn btn-positive" @click="verPagamento(data)"><i class="fas fa-dollar-sign"></i></b-button>
         </template>
         <template v-slot:cell(actions)="data">
           <b-button v-if="data.item.id == user.id" disabled class="btn btn-danger" ><i class="fas fa-times"></i></b-button>
@@ -128,7 +128,7 @@ export default{
     },
     apagar(data){
       let app = this;
-      axios.delete('usuario/delete/'+data.item.id+'/').then(res => {
+      axios.delete('usuario/delete/'+data.item.id+'/').then(() => {
         app.getUsuarios()
       })
     },
@@ -163,7 +163,7 @@ export default{
       let app = this
       let d = new Date(this.pagamento.data).toISOString();
       this.pagamento.data = Date.parse(d)
-      axios.post('pagamento/novo/'+this.usuarioSelec.id, this.pagamento).then( res => {
+      axios.post('pagamento/novo/'+this.usuarioSelec.id, this.pagamento).then( () => {
         app.novoPagamento = false
       })//.catch( err => {
       //   console.log(err)

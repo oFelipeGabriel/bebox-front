@@ -6,7 +6,7 @@
       <b-table responsive striped hover :items="aulas" :fields="fields">
         <template v-slot:cell(alunos)="data">
           <ul>
-            <li v-for="a in data.item.alunos" v-bind:key="a.id">{{a.nome}}</li>
+            <li v-for="(a, index) in data.item.alunos" v-bind:key="index" :class="{'par': index%2==0}">{{a.nome}}</li>
           </ul>
         </template>
         <template v-slot:cell(apagar)="data">
@@ -112,5 +112,8 @@ export default{
 }
 .btn-danger{
   color: #dedede;
+}
+.par{
+  background-color: #dedede;
 }
 </style>

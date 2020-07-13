@@ -9,7 +9,7 @@
       </b-card>
     </div>
     <ul class="pl-4">
-      <li v-for="aula in aulas" v-bind:key="aula" class="li-aulas">
+      <li v-for="(aula, index) in aulas" v-bind:key="index" class="li-aulas" >
         <div class="card mr-4 p-3 li-aulas-div ">
           <div class="col-md-4 d-flex flex-row px-0 mb-1">
             <div class="border rounded col-sm-5 col-md-5 pt-2 data-card">
@@ -27,10 +27,10 @@
 
           </div>
           <div class="row mt-1 mx-1 text-right  border rounded dados-aula px-3">
-
+            <!-- Termina em: {{getTempo(aula)}} -->
             <div class="col-md-4 p-0 border rounded text-center my-2 btn-fazer">
               <h2 v-if="!verificaAula(aula) && !verificaLimite(aula)" class="btn-limite px-2 py-3 m-0 rounded">Limite atingido</h2>
-              <h3 v-else-if="!verificaAula(aula)" @click="fazerCheckin(aula)" class="btn-checkin p-3 m-0">CHECK-IN</h3>
+              <h3 v-else-if="!verificaAula(aula)" @click="fazerCheckin(aula)" class="btn-checkin p-3 m-0">CHECK-IN </h3>
               <h2 v-else @click="desfazerCheckin(aula)" class="btn-desfazer p-3 m-0">Desfazer</h2>
             </div>
           </div>
@@ -57,6 +57,7 @@
 
 <script>
 import axios from 'axios';
+import moment from 'moment';
 import Header from '../components/Header.vue'
 
 export default{
@@ -95,6 +96,28 @@ export default{
 
       }).catch(() => {
       })
+    },
+    formatMinutes(min) {
+      var response = ''
+      var hours = Math.floor(min / 60);          
+      var minutes = min % 60;
+      if(hours)
+          response += `${hours.toFixed(0)}h`
+      if(minutes)
+          response += ` ${minutes.toFixed(0)}min`
+      if(response==='') return 0;
+      return response
+    },
+    getTempo(aula){
+      let d = aula.dia.split('/')
+        let dia = `${d[2]}-${d[1]}-${d[0]}`
+        let newDate = new Date(dia+' '+aula.hora);
+        let horaAtual = new Date();
+        let total = (newDate.getTime()-horaAtual.getTime())/1000/60
+        return this.formatMinutes(total);     
+    },
+    frontEndDateFormat(date) {
+      return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY');
     },
     getDia(data){
       return data.split('/')[0]
