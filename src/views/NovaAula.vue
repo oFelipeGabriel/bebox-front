@@ -43,8 +43,9 @@ export default{
       let dados = {}
       let d = new Date(this.dia)
       let novaData = d.setUTCHours(0);
+      let localOffset = d.getTimezoneOffset() * 60000;
       let app = this;
-      dados.dia = novaData;
+      dados.dia = parseInt(novaData)+parseInt(localOffset);
       dados.hora = this.hora;
       dados.quantidade = this.quantidade;
       dados.alunos_id = [];

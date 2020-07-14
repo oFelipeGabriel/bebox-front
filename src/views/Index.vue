@@ -79,11 +79,14 @@ export default{
   methods:{
     fazerCheckin(aula){
       let app = this
+      this.modal = true;
       //aula.alunos.push(this.usuario.id)
       axios.post('aula/addAluno/'+aula.id+'/'+this.usuario.id+'/').then(res => {
-        app.aulas = res.data.aulas
+        app.aulas = res.data.aulas;
+        this.modal = false;
        
       }).catch(() => {
+        this.modal = false;
       })
     },
     desfazerCheckin(aula){
