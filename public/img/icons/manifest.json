@@ -1,6 +1,10 @@
 {
   "name": "Bebox",
-  "themeColor": "#252626",
+  "short_name": "Bebox",
+  "start_url": "/login",
+  "display": "standalone",
+  "theme_color": "#252626",
+  "background_color": "#252626",
   "icons": [
     {
       "src": "./android-chrome-192x192.png",

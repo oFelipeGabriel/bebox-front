@@ -1,3 +1,17 @@
+const SWPrecache = require('sw-precache-webpack-plugin')
+
+new SWPrecache({
+  cacheId: 'dc-covers',
+  filepath: 'service-worker.js',
+  staticFileGlobs: [
+    'public/index.html',
+    'public/img/icons/manifest.json',
+    'dist/*.js',
+    'dist/*.css'
+  ],
+  stripPrefix: '/'
+})
+
 module.exports = {
     module: {
       rules: [
