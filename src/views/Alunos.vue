@@ -119,7 +119,9 @@ export default{
         data: '',
         forma: ''
       },
-      filtroForma: ''
+      filtroForma: '',
+      proxima: null,
+      anterior: null
     }
   },
   methods:{
@@ -140,9 +142,9 @@ export default{
     },
     getUsuarios(){
       let app = this;
-      axios.get('usuario/getAll').then(function(res){
-        app.alunos = res.data;
-        app.alunosFiltrados = res.data;
+      axios.get('usuario/getAll/0/4').then(function(res){
+        app.alunos = res.data.alunos;
+        app.alunosFiltrados = res.data.alunos;
       })//.catch(function(error){
       //   console.log(error)
       // })
