@@ -26,13 +26,13 @@
             </div>
 
           </div>
-          <div class="row mt-1 mx-1 text-right  border rounded dados-aula px-3">
-            <!-- Termina em: {{getTempo(aula)}} -->
-            <div class="col-md-4 p-0 border rounded text-center my-2 btn-fazer">
+          <div class="row mt-1 mx-1 text-right  border rounded dados-aula px-3">            
+            <div class="col-md-4 p-0 border rounded text-center mt-2 btn-fazer">
               <h2 v-if="!verificaAula(aula) && !verificaLimite(aula)" class="btn-limite px-2 py-3 m-0 rounded">Limite atingido</h2>
               <h3 v-else-if="!verificaAula(aula)" @click="fazerCheckin(aula)" class="btn-checkin p-3 m-0">CHECK-IN </h3>
               <h2 v-else @click="desfazerCheckin(aula)" class="btn-desfazer p-3 m-0">Desfazer</h2>
             </div>
+            <span class="w-100 text-right">Tempo de aceite termina em: {{getTempo(aula)}}</span>
           </div>
         </div>
       </li>
@@ -111,13 +111,11 @@ export default{
       if(response==='') return 0;
       return response
     },
-    getTempo(aula){
-      let d = aula.dia.split('/')
-        let dia = `${d[2]}-${d[1]}-${d[0]}`
-        let newDate = new Date(dia+' '+aula.hora);
-        let horaAtual = new Date();
-        let total = (newDate.getTime()-horaAtual.getTime())/1000/60
-        return this.formatMinutes(total);     
+    getTempo({horaLimite}){
+      let newDate = new Date(horaLimite);
+      let horaAtual = new Date();
+      let total = (newDate.getTime()-horaAtual.getTime())/1000/60
+      return this.formatMinutes(total);     
     },
     frontEndDateFormat(date) {
       return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY');
@@ -164,6 +162,7 @@ export default{
         app.aulas = res.data.aulas
         app.message = res.data.message
         app.classe = res.data.classe;
+        console.log(new Date(app.aulas[0].horaLimite))
         this.modal = false;
       }).catch(function(){
       })
