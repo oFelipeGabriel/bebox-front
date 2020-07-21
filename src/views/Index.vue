@@ -114,7 +114,7 @@ export default{
     getTempo({horaLimite}){
       let newDate = new Date(horaLimite);
       let horaAtual = new Date();
-      let total = (newDate.getTime()-horaAtual.getTime())/1000/60
+      let total = ((newDate.getTime()-horaAtual.getTime()>0)?newDate.getTime()-horaAtual.getTime():0)/1000/60
       return this.formatMinutes(total);     
     },
     frontEndDateFormat(date) {

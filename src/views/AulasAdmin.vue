@@ -28,7 +28,8 @@
       :modelAula="modelAula" 
       :aula="aulaEditar" 
       @resetModal="modelAula=false"
-      @addExperimental="addExperimental"></ModalAula>
+      @addExperimental="addExperimental"
+      @alunoRemovido="alunoRemovido"></ModalAula>
 </div>
 </template>
 
@@ -74,6 +75,10 @@ export default{
       axios.post('aula/removeAula/'+aula.id).then(res => {
         app.aulas = res.data;
       })
+    },
+    alunoRemovido(data){
+      this.modelAula = false;
+      this.aulas = data;
     },
     editaAula(data){
       this.modelAula = true;

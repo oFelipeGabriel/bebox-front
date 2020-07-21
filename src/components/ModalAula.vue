@@ -16,7 +16,10 @@
             <li v-for="(aluno, index) in aula.alunos" 
             :key="index"
             class="list-group-item">
-                {{aluno.nome}}
+                <div class="row">
+                    <div class="col-10">{{aluno.nome}}</div>
+                    <div class="col-2"><b-button class="btn btn-danger" @click="removeAluno(aluno)">X</b-button></div>
+                </div>
             </li>
             <li>
                 <b-button block @click="addExperimental">Adicionar aluno de aula experimental</b-button>
@@ -26,6 +29,7 @@
 </template>
 
 <script>
+    import axios from "axios";
 export default{
     name: 'ModalAula',
     props: ['modelAula', 'aula'],
@@ -40,6 +44,11 @@ export default{
         },
         addExperimental(){
             this.$emit('addExperimental', this.aula.id)
+        },
+        removeAluno({id}){
+            axios.post(`aula/adminRemoveAluno/${this.aula.id}/${id}/`).then(res => {
+                this.$emit('alunoRemovido', res.data);
+            })
         }
     },
     watch:{
