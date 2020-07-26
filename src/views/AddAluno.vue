@@ -41,12 +41,19 @@
           <b-form-input type="date" v-model="data_vencimento"></b-form-input>
         </div>
         <div class="form-group border rounded pl-1 mt-2">
-          <label class="col-md-4 text-left float-left mt-2">Administrador: </label>
-          <b-form-checkbox type="checkbox" class="w-25 text-left mt-2" v-model="admin"></b-form-checkbox>
+          <b-form-checkbox v-model="admin" name="check-button" class="border rounded col-6" button :button-variant="admin?'secondary':'primary-base'">
+            Administrador: <b>{{ admin?'Sim':'Não' }}</b>
+          </b-form-checkbox>
+          <b-form-checkbox v-model="ativo" name="check-button" class="border rounded col-6" button :button-variant="ativo?'secondary':'primary-base'">
+            Ativo: <b>{{ ativo?'Sim':'Não' }}</b>
+          </b-form-checkbox>
         </div>
-        <b-button @click="cadastrar">Cadastrar</b-button>
+        <div class="form-group border-rounded">
+          
+        </div>
+        <b-button @click="cadastrar">{{editar?'Atualizar':'Cadastrar'}}</b-button>
     </div>
-    <div class="card col-md-10 py-3" v-if="id_editar != null">
+    <div class="card col-md-10 py-3" v-if="id_editar">
       <div class="form-group">
         <label class="w-100 text-left">Senha: </label>
         <b-form-input type="text" v-model="senha"></b-form-input>
@@ -68,6 +75,7 @@ export default{
   },
   data(){
     return{
+      editar: false,
       nome: '',
       email: '',
       cpf: '',
@@ -80,7 +88,8 @@ export default{
       data_vencimento: '',
       id_editar: null,
       admin: false,
-      senha: ''
+      senha: '',
+      ativo: true
     }
   },
   methods:{
@@ -119,6 +128,17 @@ export default{
         this.senha = ''
       })
     },
+    atializaStatus(){
+      if(this.editar){
+        let body = {
+          id: this.id_editar,
+          status: this.ativo
+        }
+        axios.post('/usuario/atualizaStatus', body).then(() => {
+          
+        })
+      }
+    },
     convertData(data){
       if(data != null){
         let date = data.split('/')
@@ -132,10 +152,15 @@ export default{
 
     }
   },
+  watch:{
+    ativo(){
+      this.atializaStatus();
+    }
+  },
   mounted(){
     let u = this.$store.getters.getUsuarioEditar
-
     if(u){
+      this.editar = true;
       this.nome = u.nome
       this.email = u.email
       this.cpf = u.cpf
@@ -145,7 +170,8 @@ export default{
       this.endereco = u.endereco
       this.data_vencimento = this.convertData(u.dataVencimento)
       this.mensalidade = u.valor_mensalidade
-      this.id_editar = u.id
+      this.id_editar = u.id;
+      this.ativo = u.status;
       this.$store.commit('setUsuarioEditarToNull')
     }
   },

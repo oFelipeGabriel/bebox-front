@@ -30,6 +30,11 @@
       @resetModal="modelAula=false"
       @addExperimental="addExperimental"
       @alunoRemovido="alunoRemovido"></ModalAula>
+    
+      <b-modal id="modal-apagar-aula" v-model="apagaAula" title="Apagar aula"
+      cancel-title="Cancelar" ok-variant="danger" @ok="confirmaRemoveAula" @hidden="aulaApagar=null">
+        <h3 class="my-4">Deseja realmente apagar a aula?</h3>
+      </b-modal>
 </div>
 </template>
 
@@ -59,6 +64,8 @@ export default{
       ],
       modelAula: false,
       aulaEditar: null,
+      apagaAula: false,
+      aulaApagar: null
     }
   },
   methods:{
@@ -71,9 +78,13 @@ export default{
       return h+':'+m
     },
     removeAula(aula){
-      let app = this;
-      axios.post('aula/removeAula/'+aula.id).then(res => {
-        app.aulas = res.data;
+      this.apagaAula = true;
+      this.aulaApagar = aula;
+    },
+    confirmaRemoveAula(){
+      axios.post('aula/removeAula/'+this.aulaApagar.id).then(res => {
+        this.aulaApagar = null;
+        this.aulas = res.data;
       })
     },
     alunoRemovido(data){

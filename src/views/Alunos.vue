@@ -5,11 +5,16 @@
       <div class="form-group">
         <label for="input-filter" class="text-left w-100 font-weight-bold">Buscar: </label>
         <input type="text" v-model="filter" id="input-filter" placeholder="Digite o nome" class="form-control">
+        <b-form-checkbox v-model="ativos" name="check-button" switch>
+          Buscar apenas usuários ativos <b>({{ ativos?'Sim':'Não' }})</b>
+        </b-form-checkbox>
       </div>
     </div>
     <div class="card col-md-12">
-      <b-table responsive striped hover :items="alunosFiltrados" :fields="fields" @row-clicked="editarAluno">
-
+      <b-table id="id_tabela-alunos" responsive striped hover :items="alunosFiltrados" :fields="fields" @row-clicked="editarAluno">
+        <template v-slot:cell(dataVencimento)="data">
+          <span :class="comparaData(data.item.dataVencimento)">{{data.item.dataVencimento}}</span>
+        </template>
         <template v-slot:cell(pag)="data">
           <b-button class="btn btn-positive" @click="verPagamento(data)"><i class="fas fa-dollar-sign"></i></b-button>
         </template>
@@ -19,6 +24,15 @@
         </template>
 
       </b-table>
+      <div aria-label="Page navigation example" class="navigation">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" @click="goPrev()" v-show="atual>0">Anterior</a></li>
+          <li class="page-item"><a class="page-link" @click="goPrev()" v-show="atual>0">{{anterior+parseInt(1)}}</a></li>
+          <li class="page-item activo"><a class="page-link" >{{atual+parseInt(1)}}</a></li>
+          <li class="page-item"><a class="page-link" @click="getUsuarios()" v-show="proxima>0">{{proxima+parseInt(1)}}</a></li>
+          <li class="page-item"><a class="page-link" @click="getUsuarios()" v-show="proxima>0">Próxima</a></li>
+        </ul>
+      </div>
     </div>
     <b-modal id="modal-1" title="Pagamentos" v-model="modalPagamento">
       <h3 v-if="usuarioSelec">{{usuarioSelec.nome}}</h3>
@@ -98,7 +112,6 @@ export default{
       fields:[
         {key: 'nome', label: 'Nome',stickyColumn: true, class: 'pointer', sortable: true},
         {key: 'dataVencimento', label: 'Data de vencimento', sortable: true},
-        {key: 'email',label: 'E-mail', sortable: true},
         {key: 'endereco', label: 'Endereço', sortable: true},
         'telefone', 'cpf',
         {key:'pag', label:'Pagamento'},
@@ -120,8 +133,11 @@ export default{
         forma: ''
       },
       filtroForma: '',
-      proxima: null,
-      anterior: null
+      proxima: 0,
+      atual: 1,
+      anterior: null,
+      total: null,
+      ativos: true
     }
   },
   methods:{
@@ -134,20 +150,77 @@ export default{
         app.getUsuarios()
       })
     },
+    comparaData(data){
+      if(data.includes('/')){
+        let dataSplit = data.split('/');
+        let dia = dataSplit[0];
+        let mes = dataSplit[1];
+        let ano = dataSplit[2];
+        let dataVenc = new Date(ano+'-'+mes+'-'+dia).getTime()
+        let hoje = new Date().getTime();
+        if(dataVenc<hoje){
+          return 'font-weight-bold text-danger';
+        }else{
+          return '';
+        }
+        
+      }else{
+        return '';
+      }
+      
+    },
     filtraForma(val){
       let app = this
       axios.get('pagamento/'+val+'/'+this.usuarioSelec.id).then(res => {
         app.pagamentos = res.data
       })
     },
+    goPrev(){
+      if(this.anterior>=0){
+        this.proxima = this.anterior;
+        this.getUsuarios()
+      }
+    },
     getUsuarios(){
       let app = this;
-      axios.get('usuario/getAll/0/4').then(function(res){
+      axios.get(`usuario/getAll/${this.proxima}/10?ativo=${this.ativos}`).then(res =>{
         app.alunos = res.data.alunos;
         app.alunosFiltrados = res.data.alunos;
+        if(res.data.next>0){
+          app.proxima = res.data.next;
+          app.atual = app.proxima-1;
+        }else{
+          app.atual = res.data.total>1?app.proxima:0;
+          app.proxima = 0;
+        }
+        app.anterior = res.data.prev;
+        app.total = res.data.total;
       })//.catch(function(error){
       //   console.log(error)
       // })
+    },
+    getUsuarioFiltro(){
+      let body = {
+        nome: this.filter
+      }
+      if(this.filter.length>0){
+        axios.post(`usuario/buscaAluno?ativo=${this.ativos}`, body).then(res => {
+         this.alunos = res.data.alunos;
+         this.alunosFiltrados = res.data.alunos;
+        if(res.data.next>0){
+          this.proxima = res.data.next;
+          this.atual = this.proxima-1;
+        }else{
+          this.atual = this.proxima;
+          this.proxima = 0;
+        }
+        this.anterior = res.data.prev;
+        this.total = res.data.total;
+        })
+      }else{
+        this.proxima = 0;
+        this.getUsuarios();
+      }
     },
     verPagamento(data){
       this.novoPagamento = false
@@ -177,10 +250,14 @@ export default{
   },
   watch:{
     filter(){
-      this.alunosFiltrados = this.alunos.filter(p => {
-        return p.nome.toLowerCase().includes(this.filter.toLowerCase());
-      })
+      this.getUsuarioFiltro();
+      // this.alunosFiltrados = this.alunos.filter(p => {
+      //   return p.nome.toLowerCase().includes(this.filter.toLowerCase());
+      // })
     },
+    ativos(){
+      this.getUsuarioFiltro();
+    }
   },
   computed:{
       token:{
@@ -212,5 +289,15 @@ export default{
 }
 .pointer{
   cursor:pointer;
+}
+.navigation{
+  margin: 0 auto;
+}
+.pagination li{
+  cursor: pointer;
+}
+li.activo a{
+  background-color: $primary;
+  color: $secondary
 }
 </style>
