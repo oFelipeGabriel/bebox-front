@@ -2,11 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersist from 'vuex-persist'
 import router from './router';
+import pack from '../package.json'
+
 
 Vue.use(Vuex)
 
 const vuexPersist = new VuexPersist({
-  key: 'my-sec-app',
+  key: 'bebox-app',
   storage: localStorage
 })
 
@@ -22,6 +24,7 @@ export default new Vuex.Store({
     admin: false,
     nome: null,
     usuarioEditar: null,
+    packageVersion: (pack.version || '0.0.0'),
   },
   mutations: {
     setUsuario (state, usuario) {
@@ -54,6 +57,9 @@ export default new Vuex.Store({
       state.token = null
       state.usuario = null
       state.temToken = false
+    },
+    setPackageVersion(state){
+      state.packageVersion = pack.version;
     }
   },
   actions: {
@@ -83,6 +89,9 @@ export default new Vuex.Store({
     },
     getUsuarioEditar: state => {
       return state.usuarioEditar
+    },
+    appVersion: (state) => {
+      return state.packageVersion
     }
   }
 })

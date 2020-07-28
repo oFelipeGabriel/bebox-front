@@ -162,7 +162,6 @@ export default{
         app.aulas = res.data.aulas
         app.message = res.data.message
         app.classe = res.data.classe;
-        console.log(new Date(app.aulas[0].horaLimite))
         this.modal = false;
       }).catch(function(){
       })

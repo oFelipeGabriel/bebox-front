@@ -95,12 +95,13 @@ export default{
       this.modelAula = true;
       this.aulaEditar = data.item;
     },
-    addExperimental(aula){
-      axios.post(`aula/addAlunoExperimental/${aula}`).then(res => {
-        this.aulas = res.data
-        this.modelAula = false;
-      this.aulaEditar = null;
-      })
+    addExperimental(aulas){
+      this.aulas = aulas
+      // axios.post(`aula/addAlunoExperimental/${aula}`).then(res => {
+        
+      //   this.modelAula = false;
+      // this.aulaEditar = null;
+      // })
     }
   },
   mounted(){

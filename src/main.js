@@ -11,7 +11,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
-import './registerServiceWorker'
+import './registerServiceWorker';
+
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
+Vue.component('v-select', vSelect);
 
 Vue.use(BootstrapVue)
 
