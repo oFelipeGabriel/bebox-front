@@ -128,7 +128,7 @@ export default{
       return this.meses[mes-1]
     },
     verificaLimite(aula){
-      if(aula.quantidade == aula.alunos.length){
+      if(aula.quantidade >= aula.alunos.length){
         return false
       }else{
         return true
