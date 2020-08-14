@@ -151,7 +151,7 @@ export default{
       })
     },
     comparaData(data){
-      if(data.includes('/')){
+      if(data && data.includes('/')){
         let dataSplit = data.split('/');
         let dia = dataSplit[0];
         let mes = dataSplit[1];
