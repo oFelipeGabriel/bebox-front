@@ -1,13 +1,13 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from "./router";
 import store from './store'
 import axios from 'axios'
 
-import BootstrapVue from 'bootstrap-vue'
+import { createBootstrap } from 'bootstrap-vue-next'
 
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
@@ -15,14 +15,19 @@ import './registerServiceWorker';
 
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
-Vue.component('v-select', vSelect);
 
-Vue.use(BootstrapVue)
+const app = createApp(App)
+const bootstrap = createBootstrap()
 
-Vue.config.productionTip = false
-//axios.defaults.baseURL = 'https://bebox-sjc.herokuapp.com/'
+app.use(store)
+app.use(router)
+app.use(bootstrap)
+app.component('v-select', vSelect)
+
+app.config.productionTip = false
+
 axios.defaults.baseURL = process.env.VUE_APP_ROOT_URL
-// axios.defaults.withCredentials = true;
+
 axios.interceptors.request.use(config => {
   if(store.state.token) {
     config.headers.Authorization = 'Bearer '+store.state.token
@@ -33,21 +38,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(res => {
     return res
   }, error => {
-    // if(error.response.status === 403) {
-    //   alert('Não autorizado!')
-    //   //store.commit('logout')
-    //   router.push('/login')
-    // }
-    // else if (error.response.status === 401) {
-    //   //store.commit('logout')
-    //   router.push('/login')
-    // }
     throw error
 })
-Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  render: h => h(App),
-}).$mount('#app')
+app.mount('#app')

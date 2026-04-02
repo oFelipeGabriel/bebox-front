@@ -1,18 +1,14 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import VuexPersist from 'vuex-persist'
 import router from './router';
 import pack from '../package.json'
-
-
-Vue.use(Vuex)
 
 const vuexPersist = new VuexPersist({
   key: 'bebox-app',
   storage: localStorage
 })
 
-export default new Vuex.Store({
+export default createStore({
   plugins: [
     vuexPersist.plugin
   ],
