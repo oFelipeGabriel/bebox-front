@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Login from "@/views/Login.vue";
 import Index from "@/views/Index.vue";
 import Alunos from "@/views/Alunos.vue";
@@ -7,11 +6,8 @@ import AddAluno from "@/views/AddAluno.vue";
 import NovaAula from "@/views/NovaAula.vue";
 import AulasAdmin from "@/views/AulasAdmin.vue";
 
-Vue.use(Router)
-
-const router = new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -48,11 +44,7 @@ const router = new Router({
       component: AulasAdmin
     },
     //{ path: "*", component: NotFound },
-
-
   ]
-
 })
-
 
 export default router;

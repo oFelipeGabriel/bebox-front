@@ -1,20 +1,19 @@
 module.exports = {
-  devServer:{
+  devServer: {
     proxy: 'http://localhost:8000/'
-  }
-}
-module.exports = {
+  },
   css: {
     loaderOptions: {
       sass: {
-        prependData: `@import "@/css/app.scss";`
+        additionalData: `@import "@/css/app.scss";`
       }
     }
   },
-  pwa:{
+  pwa: {
     name: 'Bebox',
     themeColor: '#252626'
-  }
+  },
+  lintOnSave: false
 };
 
 // module.exports = {

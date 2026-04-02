@@ -18,14 +18,14 @@
         label="nome" 
         @search="fetchOptions"
         v-model="selected">
-            <template v-slot:no-options="{ search, searching }">
+            <template #no-options="{ search, searching, loading }">
                 <template v-if="searching">
                 Nenhum resultado encontrado para <em>{{ search }}</em>.
                 </template>
-            </template>
-            <template #no-options="{ search, searching, loading }">
+                <template v-else>
                 Nenhum resultado
-              </template>
+                </template>
+            </template>
         </v-select>
         <ul class="list-group">
             <li v-for="(aluno, index) in aulaModal.alunos" 
