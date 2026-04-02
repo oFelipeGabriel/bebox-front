@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from "@/views/Login.vue";
 import Index from "@/views/Index.vue";
+import Landing from "@/views/Landing.vue";
 import Alunos from "@/views/Alunos.vue";
 import AddAluno from "@/views/AddAluno.vue";
 import NovaAula from "@/views/NovaAula.vue";
@@ -11,7 +12,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: "/login",
+      name: 'landing',
+      component: Landing
     },
     {
       path: '/login',

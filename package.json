@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "postinstall": "npm run build",
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@vue/cli": "^5.0.9",
@@ -35,9 +36,10 @@
     "@vue/cli-plugin-pwa": "^5.0.9",
     "@vue/cli-service": "^5.0.9",
     "babel-eslint": "^10.1.0",
+    "ejs": ">=3.1.10",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^10.8.0",
-    "ejs": ">=3.1.10",
+    "gh-pages": "^6.3.0",
     "node-sass": "^9.0.0",
     "sass-loader": "^16.0.7",
     "vue-eslint-parser": "^10.0.0"

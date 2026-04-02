@@ -13,7 +13,8 @@ module.exports = {
     name: 'Bebox',
     themeColor: '#252626'
   },
-  lintOnSave: false
+  lintOnSave: false,
+  publicPath: process.env.NODE_ENV === 'production' ? '/bebox-front/' : '/'
 };
 
 // module.exports = {
